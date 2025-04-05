@@ -1,0 +1,6 @@
+@VibLink_HostAddress = http://localhost:5116
+
+GET {{VibLink_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
