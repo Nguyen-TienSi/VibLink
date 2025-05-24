@@ -1,4 +1,4 @@
-﻿namespace VibLink.Domain.Enums
+﻿namespace VibLink.Models.Enums
 {
     public enum MessageType
     {

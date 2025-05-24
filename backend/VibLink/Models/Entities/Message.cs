@@ -1,24 +1,28 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using VibLink.Domain.Enums;
+using MongoDB.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using VibLink.Models.Enums;
 
-namespace VibLink.Domain.Entities
+namespace VibLink.Models.Entities
 {
+    [Collection("messages")]
     public class Message : BaseEntity
     {
         [BsonElement("sender")]
         public required UserDetails Sender { get; set; }
         [BsonElement("content")]
         public string Content { get; set; } = string.Empty;
-        [BsonElement("mediaType")]
-        public MessageType MediaType { get; set; } = MediaType.Unknown;
-        [BsonElement("mediaUrl")]
-        public string MediaUrl { get; set; } = string.Empty;
+        [BsonElement("messageType")]
+        [BsonRepresentation(BsonType.String)]
+        public MessageType MessageType { get; set; }
         [BsonElement("recipients")]
 
         public ICollection<UserDetails>? Recipients { get; set; }
+        [NotMapped]
         [BsonElement("seenBy")]
         public ICollection<Dictionary<UserDetails, DateTime>>? SeenBy { get; set; }
+        [NotMapped]
         [BsonElement("reactions")]
         public ICollection<Dictionary<UserDetails, ReactionType>>? Reactions { get; set; }
     }

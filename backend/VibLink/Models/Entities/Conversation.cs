@@ -1,8 +1,11 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using VibLink.Domain.Enums;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.EntityFrameworkCore;
+using VibLink.Models.Enums;
 
-namespace VibLink.Domain.Entities
+namespace VibLink.Models.Entities
 {
+    [Collection("conversations")]
     public class Conversation : BaseEntity
     {
         [BsonElement("chatName")]
@@ -10,9 +13,8 @@ namespace VibLink.Domain.Entities
         [BsonElement("chatPictureUrl")]
         public string ChatPictureUrl { get; set; } = string.Empty;
         [BsonElement("conversationType")]
-        public ConversationType Type { get; set; } = ConversationType.PERSONAL;
-        [BsonElement("isMuted")]
-        public ICollection<UserDetails>? IsMuted { get; set; }
+        [BsonRepresentation(BsonType.String)]
+        public ConversationType ConversationType { get; set; } = ConversationType.PERSONAL;
         [BsonElement("participants")]
         public ICollection<UserDetails>? Participants { get; set; }
         [BsonElement("lastMessage")]

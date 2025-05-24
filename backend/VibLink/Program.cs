@@ -1,4 +1,7 @@
 
+using VibLink.Data;
+using VibLink.Extensions;
+
 namespace VibLink
 {
     public class Program
@@ -7,7 +10,11 @@ namespace VibLink
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Add services to the container
+            builder.Services.AddMongo(builder.Configuration);
+            builder.Services.AddApplicationServices();
+
+            builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,6 +36,12 @@ namespace VibLink
 
 
             app.MapControllers();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<VibLinkDbContext>();
+                dbContext.SeedUserDetails();
+            }
 
             app.Run();
         }

@@ -1,7 +1,9 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.EntityFrameworkCore;
 
-namespace VibLink.Domain.Entities
+namespace VibLink.Models.Entities
 {
+    [Collection("friendships")]
     public class Friendship : BaseEntity
     {
         [BsonElement("requester")]

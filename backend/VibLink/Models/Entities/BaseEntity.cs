@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace VibLink.Domain.Entities
+namespace VibLink.Models.Entities
 {
     public abstract class BaseEntity
     {
