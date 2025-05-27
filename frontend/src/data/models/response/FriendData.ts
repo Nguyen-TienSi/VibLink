@@ -1,12 +1,36 @@
-export interface FriendData {
-  id: number
-  name: string
-  message: string
-  time: string
+export class FriendData {
+  constructor(
+    public id: number,
+    public name: string,
+    public message: string,
+    public time: string
+  ) {}
+
+  static fromJson(json: Record<string, unknown>): FriendData {
+    return new FriendData(
+      json['id'] as number,
+      json['name'] as string,
+      json['message'] as string,
+      json['time'] as string
+    )
+  }
+
+  toJson(): string {
+    return JSON.stringify({
+      id: this.id,
+      name: this.name,
+      message: this.message,
+      time: this.time
+    })
+  }
+
+  toString(): string {
+    return this.toJson()
+  }
 }
 
 export const friends: FriendData[] = [
-  { id: 1, name: 'Osman Campos', message: 'You: Hey! We are ready...', time: '20m' },
-  { id: 2, name: 'Jasmin Lowery', message: 'You: Let’s discuss...', time: '1h' },
-  { id: 3, name: 'Anthony Cordanes', message: 'What do you think?', time: '1d' }
+  new FriendData(1, 'Osman Campos', 'You: Hey! We are ready...', '20m'),
+  new FriendData(2, 'Jasmin Lowery', 'You: Let’s discuss...', '1h'),
+  new FriendData(3, 'Anthony Cordanes', 'What do you think?', '1d')
 ]
