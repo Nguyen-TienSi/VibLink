@@ -50,8 +50,12 @@ export default class HttpApiProvider extends HttpProvider implements ApiProvider
       if (method === HttpMethod.HEAD || method === HttpMethod.OPTIONS) {
         return {} as T
       }
-      const data = await response.json()
-      return new ApiResponse<T>(data).data as T
+      const responseBody = (await response.json()) as ApiResponse<T>
+      if (responseBody.success) {
+        return responseBody.data as T
+      } else {
+        throw new Error(responseBody.error || 'Unknown error')
+      }
     } catch (error) {
       this.handleError(error)
       throw error
