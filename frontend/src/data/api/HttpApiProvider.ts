@@ -51,6 +51,13 @@ export default class HttpApiProvider extends HttpProvider implements ApiProvider
         return {} as T
       }
       const responseBody = (await response.json()) as ApiResponse<T>
+      responseBody
+        .onSuccess((data: T) => {
+          console.log('Request successful:', data)
+        })
+        .onError((error: string) => {
+          console.error('Request failed:', error)
+        })
       if (responseBody.success) {
         return responseBody.data as T
       } else {

@@ -1,4 +1,4 @@
-import { FriendData } from '../../models/response/FriendData'
+import { FriendData } from '../../data/models/response/FriendData'
 
 interface FriendItemProps {
   friend: FriendData

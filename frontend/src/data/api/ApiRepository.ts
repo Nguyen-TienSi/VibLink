@@ -5,27 +5,36 @@ export default class ApiRepository {
     if (!apiProvider) {
       throw new Error('ApiProvider is required')
     }
-    this.apiProvider = apiProvider
   }
 
-  async get<T>(endpoint: string, params?: Record<string, unknown>, headers?: Headers): Promise<T> {
-    return this.apiProvider.get<T>(endpoint, params, headers)
+  async get<T>(
+    endpoint: string,
+    params?: Record<string, unknown>,
+    headers?: Headers,
+    callback?: (data: T) => T
+  ): Promise<T> {
+    const data = await this.apiProvider.get<T>(endpoint, params, headers)
+    return callback ? callback(data) : data
   }
 
-  async post<T>(endpoint: string, headers?: Headers, body?: unknown): Promise<T> {
-    return this.apiProvider.post<T>(endpoint, headers, body)
+  async post<T>(endpoint: string, headers?: Headers, body?: unknown, callback?: (data: T) => T): Promise<T> {
+    const data = await this.apiProvider.post<T>(endpoint, headers, body)
+    return callback ? callback(data) : data
   }
 
-  async put<T>(endpoint: string, headers?: Headers, body?: unknown): Promise<T> {
-    return this.apiProvider.put<T>(endpoint, headers, body)
+  async put<T>(endpoint: string, headers?: Headers, body?: unknown, callback?: (data: T) => T): Promise<T> {
+    const data = await this.apiProvider.put<T>(endpoint, headers, body)
+    return callback ? callback(data) : data
   }
 
-  async patch<T>(endpoint: string, headers?: Headers, body?: unknown): Promise<T> {
-    return this.apiProvider.patch<T>(endpoint, headers, body)
+  async patch<T>(endpoint: string, headers?: Headers, body?: unknown, callback?: (data: T) => T): Promise<T> {
+    const data = await this.apiProvider.patch<T>(endpoint, headers, body)
+    return callback ? callback(data) : data
   }
 
-  async delete<T>(endpoint: string, headers?: Headers): Promise<T> {
-    return this.apiProvider.delete<T>(endpoint, headers)
+  async delete<T>(endpoint: string, headers?: Headers, callback?: (data: T) => T): Promise<T> {
+    const data = await this.apiProvider.delete<T>(endpoint, headers)
+    return callback ? callback(data) : data
   }
 
   async head<T>(endpoint: string, headers?: Headers): Promise<T> {
