@@ -19,7 +19,7 @@ class ApiResponse<T> {
     return this
   }
 
-  onError(callback: (error: string) => void): ApiResponse<T> {
+  onError(callback: (error: string) => never): ApiResponse<T> {
     if (!this.success && this.error !== null) {
       callback(this.error)
     }

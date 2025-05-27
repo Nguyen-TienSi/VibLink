@@ -1,7 +1,6 @@
 import ApiProvider from './ApiProvider'
 import HttpProvider from './HttpProvider'
 import HttpMethod from './HttpMethod'
-import ApiResponse from './ApiResponse'
 
 export default class HttpApiProvider extends HttpProvider implements ApiProvider {
   get<T>(endpoint: string, params?: Record<string, unknown>, headers?: Headers): Promise<T> {
@@ -45,24 +44,24 @@ export default class HttpApiProvider extends HttpProvider implements ApiProvider
       const response: Response = await fetch(finalUrl, requestOptions)
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        let errorDetails = ''
+        try {
+          const errorBody = await response.text()
+          if (errorBody) {
+            errorDetails = ` - ${errorBody}`
+          }
+        } catch {
+          // Failed to read error body, proceed without it
+        }
+        const errorMessage = `HTTP error! status: ${response.status}${errorDetails}`
+        console.error('Request failed:', errorMessage)
+        throw new Error(errorMessage)
       }
       if (method === HttpMethod.HEAD || method === HttpMethod.OPTIONS) {
         return {} as T
       }
-      const responseBody = (await response.json()) as ApiResponse<T>
-      responseBody
-        .onSuccess((data: T) => {
-          console.log('Request successful:', data)
-        })
-        .onError((error: string) => {
-          console.error('Request failed:', error)
-        })
-      if (responseBody.success) {
-        return responseBody.data as T
-      } else {
-        throw new Error(responseBody.error || 'Unknown error')
-      }
+      const data: T = (await response.json()) as T
+      return data
     } catch (error) {
       this.handleError(error)
       throw error
