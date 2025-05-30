@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VibLink.Data;
+using VibLink.Http;
 using VibLink.Models.Settings;
 using VibLink.Repositories;
 using VibLink.Repositories.Implementors;
@@ -30,6 +31,14 @@ namespace VibLink.Extensions
         {
             services.AddSingleton<VibLinkDbContext>();
             services.Configure<MongoDbSetting>(configuration.GetSection(nameof(MongoDbSetting)));
+            return services;
+        }
+
+        public static IServiceCollection AddHttpServices(this IServiceCollection services)
+        {
+            services.AddHttpContextAccessor();
+            services.AddScoped<HttpContextManager>();
+
             return services;
         }
     }

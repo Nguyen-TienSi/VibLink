@@ -13,6 +13,7 @@ namespace VibLink
             // Add services to the container
             builder.Services.AddMongo(builder.Configuration);
             builder.Services.AddApplicationServices();
+            builder.Services.AddHttpServices();
 
             builder.Services.AddAutoMapper(typeof(Program).Assembly);
 

@@ -9,5 +9,10 @@ namespace VibLink.Repositories.Implementors
             : base(dbContext)
         {
         }
+
+        public IEnumerable<Conversation> FindByParticipant(UserDetails userDetails)
+        {
+            return [.. AsQueryable().Where(c => c.Participants != null && c.Participants.Any(p => p.Id == userDetails.Id))];
+        }
     }
 }

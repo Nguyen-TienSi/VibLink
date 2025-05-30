@@ -20,7 +20,7 @@ namespace VibLink.Models.Entities
         public string PictureUrl { get; set; } = string.Empty;
         [BsonElement("user_roles")]
         [BsonRepresentation(BsonType.String)]
-        public ICollection<UserRole>? UserRoles { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; } = [];
         [BsonElement("lastLogin")]
         public DateTime LastLogin { get; set; } = DateTime.UtcNow;
         [BsonElement("friends")]

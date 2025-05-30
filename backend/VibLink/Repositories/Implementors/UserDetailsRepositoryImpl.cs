@@ -1,4 +1,5 @@
-﻿using VibLink.Data;
+﻿using MongoDB.Bson;
+using VibLink.Data;
 using VibLink.Models.Entities;
 
 namespace VibLink.Repositories.Implementors
@@ -8,6 +9,18 @@ namespace VibLink.Repositories.Implementors
         public UserDetailsRepositoryImpl(VibLinkDbContext dbContext)
             : base(dbContext)
         {
+        }
+
+        public IEnumerable<UserDetails> FindUserFriends(ObjectId objectId)
+        {
+            var user = this.FindByIdAsync(objectId).Result;
+            return user?.Friends ?? Enumerable.Empty<UserDetails>();
+        }
+
+        public IEnumerable<UserDetails> FindBlockedUsers(ObjectId objectId)
+        {
+            var user = this.FindByIdAsync(objectId).Result;
+            return user?.BlockedUsers ?? Enumerable.Empty<UserDetails>();
         }
     }
 }

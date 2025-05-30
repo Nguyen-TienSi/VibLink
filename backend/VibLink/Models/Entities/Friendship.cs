@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.EntityFrameworkCore;
+using VibLink.Models.Enumurations;
 
 namespace VibLink.Models.Entities
 {
@@ -11,7 +12,7 @@ namespace VibLink.Models.Entities
         [BsonElement("addressee")]
 
         public required UserDetails Addressee { get; set; }
-        [BsonElement("isAccepted")]
-        public bool IsAccepted { get; set; } = false;
+        [BsonElement("friend_request_status")]
+        public FriendRequestStatus FriendRequestStatus { get; set; }
     }
 }

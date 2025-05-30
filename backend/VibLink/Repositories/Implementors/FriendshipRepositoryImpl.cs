@@ -9,5 +9,10 @@ namespace VibLink.Repositories.Implementors
             : base(dbContext)
         {
         }
+
+        public IEnumerable<Friendship> FindByAddressee(UserDetails addressee)
+        {
+            return [.. AsQueryable().Where(f => f.Addressee.Id == addressee.Id)];
+        }
     }
 }
