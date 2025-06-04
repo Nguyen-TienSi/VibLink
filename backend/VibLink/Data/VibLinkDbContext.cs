@@ -1,23 +1,16 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 using VibLink.Models.Entities;
 using VibLink.Models.Enums;
 using VibLink.Models.Settings;
 
 namespace VibLink.Data
 {
-    public class VibLinkDbContext
+    public class VibLinkDbContext(IMongoDatabase database)
     {
-        private readonly IMongoDatabase _database;
-
-        public VibLinkDbContext(IOptions<MongoDbSetting> options)
-        {
-            var client = new MongoClient(options.Value.ConnectionURI);
-            _database = client.GetDatabase(options.Value.DatabaseName);
-        }
-
         public IMongoCollection<T> GetCollection<T>(string collectionName) =>
-            _database.GetCollection<T>(collectionName);
+            database.GetCollection<T>(collectionName);
 
         public void SeedUserDetails()
         {
@@ -34,7 +27,9 @@ namespace VibLink.Data
                         PasswordHash = "hashedpassword1",
                         PictureUrl = "https://example.com/john.jpg",
                         UserRoles = [UserRole.USER],
-                        LastLogin = DateTime.UtcNow
+                        LastLogin = DateTime.UtcNow,
+                        Friends = [],
+                        BlockedUsers = []
                     },
                     new() {
                         FirstName = "Jane",
@@ -43,7 +38,9 @@ namespace VibLink.Data
                         PasswordHash = "hashedpassword2",
                         PictureUrl = "https://example.com/jane.jpg",
                         UserRoles = [UserRole.ADMIN],
-                        LastLogin = DateTime.UtcNow
+                        LastLogin = DateTime.UtcNow,
+                        Friends = [],
+                        BlockedUsers = []
                     }
                 };
                 collection.InsertMany(users);

@@ -1,6 +1,6 @@
 ﻿namespace VibLink.Models.DTOs.Shared
 {
-    public enum FriendRequestStatusDto
+    public enum FriendRequestStatus
     {
         PENDING,
         ACCEPTED,

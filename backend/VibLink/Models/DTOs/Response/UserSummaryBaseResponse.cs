@@ -2,7 +2,7 @@
 
 namespace VibLink.Models.DTOs.Response
 {
-    public record UserSummaryBaseDto
+    public record UserSummaryBaseResponse
     {
         public ObjectId Id { get; init; }
         public string FirstName { get; init; } = string.Empty;

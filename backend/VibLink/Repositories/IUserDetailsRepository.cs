@@ -8,5 +8,7 @@ namespace VibLink.Repositories
         IEnumerable<UserDetails> FindUserFriends(ObjectId objectId);
 
         IEnumerable<UserDetails> FindBlockedUsers(ObjectId objectId);
+
+        UserDetails? FindByEmail(string email);
     }
 }

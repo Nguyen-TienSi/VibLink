@@ -1,6 +1,6 @@
 ﻿namespace VibLink.Models.DTOs.Shared
 {
-    public enum ConversationTypeDto
+    public enum ConversationType
     {
         GROUP,
         PERSONAL,

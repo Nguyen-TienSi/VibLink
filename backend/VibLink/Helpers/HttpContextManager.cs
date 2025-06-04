@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace VibLink.Http
+namespace VibLink.Helpers
 {
     public class HttpContextManager
     {

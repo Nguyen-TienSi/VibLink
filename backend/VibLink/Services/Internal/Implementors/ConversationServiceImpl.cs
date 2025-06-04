@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MongoDB.Bson;
-using VibLink.Http;
+using VibLink.Helpers;
 using VibLink.Models.DTOs.Response;
 using VibLink.Repositories;
 
@@ -25,20 +25,20 @@ namespace VibLink.Services.Internal.Implementors
             _httpContextManager = httpContextManager;
         }
 
-        public IEnumerable<ConversationDetailsDto> GetByParticipant()
+        public IEnumerable<ConversationDetailsResponse> GetByParticipant()
         {
             var objectId = ObjectId.Parse(_httpContextManager.GetUserId());
             var userDetails = _userDetailsRepository.FindByIdAsync(objectId).Result;
             var conversations = _conversationRepository.FindByParticipant(userDetails!);
 
-            return _mapper.Map<IEnumerable<ConversationDetailsDto>>(conversations);
+            return _mapper.Map<IEnumerable<ConversationDetailsResponse>>(conversations);
         }
 
-        public ConversationDetailsDto? GetById(ObjectId id)
+        public ConversationDetailsResponse? GetById(ObjectId id)
         {
             var conversation = _conversationRepository.FindByIdAsync(id).Result;
 
-            return _mapper.Map<ConversationDetailsDto>(conversation);
+            return _mapper.Map<ConversationDetailsResponse>(conversation);
         }
     }
 }

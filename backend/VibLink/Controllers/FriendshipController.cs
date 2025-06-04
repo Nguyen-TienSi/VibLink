@@ -17,7 +17,7 @@ namespace VibLink.Controllers
         }
 
         [HttpGet("addressee")]
-        public ActionResult<IEnumerable<FriendshipDetailsDto>> GetByAddressee()
+        public ActionResult<IEnumerable<FriendshipDetailsResponse>> GetByAddressee()
         {
             var friendships = _friendshipService.GetByAddressee();
             if (friendships == null || !friendships.Any())

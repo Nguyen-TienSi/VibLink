@@ -4,6 +4,6 @@ namespace VibLink.Services.Internal
 {
     public interface IFriendshipService
     {
-        public IEnumerable<FriendshipDetailsDto> GetByAddressee();
+        public IEnumerable<FriendshipDetailsResponse> GetByAddressee();
     }
 }

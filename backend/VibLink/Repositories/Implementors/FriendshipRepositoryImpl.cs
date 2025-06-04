@@ -5,8 +5,7 @@ namespace VibLink.Repositories.Implementors
 {
     public class FriendshipRepositoryImpl : MongoRepositoryImpl<Friendship>, IFriendshipRepository
     {
-        public FriendshipRepositoryImpl(VibLinkDbContext dbContext)
-            : base(dbContext)
+        public FriendshipRepositoryImpl(VibLinkDbContext dbContext) : base(dbContext)
         {
         }
 

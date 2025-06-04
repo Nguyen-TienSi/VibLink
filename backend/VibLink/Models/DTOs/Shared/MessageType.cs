@@ -1,6 +1,6 @@
 ﻿namespace VibLink.Models.DTOs.Shared
 {
-    public enum MessageTypeDto
+    public enum MessageType
     {
         IMAGE,
         VIDEO,

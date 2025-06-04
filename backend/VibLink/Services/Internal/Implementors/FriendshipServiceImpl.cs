@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MongoDB.Bson;
-using VibLink.Http;
+using VibLink.Helpers;
 using VibLink.Models.DTOs.Response;
 using VibLink.Repositories;
 
@@ -25,13 +25,13 @@ namespace VibLink.Services.Internal.Implementors
             _httpContextManager = httpContextManager;
         }
 
-        public IEnumerable<FriendshipDetailsDto> GetByAddressee()
+        public IEnumerable<FriendshipDetailsResponse> GetByAddressee()
         {
             var objectId = ObjectId.Parse(_httpContextManager.GetUserId());
             var addressee = _userDetailsRepository.FindByIdAsync(objectId).Result;
             var friendships = _friendshipRepository.FindByAddressee(addressee!);
 
-            return _mapper.Map<IEnumerable<FriendshipDetailsDto>>(friendships);
+            return _mapper.Map<IEnumerable<FriendshipDetailsResponse>>(friendships);
         }
     }
 }

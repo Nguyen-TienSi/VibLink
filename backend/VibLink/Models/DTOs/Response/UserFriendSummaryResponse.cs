@@ -2,7 +2,7 @@
 
 namespace VibLink.Models.DTOs.Response
 {
-    public record BlockedUserSummaryDto : UserSummaryBaseDto
+    public record UserFriendSummaryResponse : UserSummaryBaseResponse
     {
     }
 }

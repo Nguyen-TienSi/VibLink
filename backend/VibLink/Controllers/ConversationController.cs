@@ -18,7 +18,7 @@ namespace VibLink.Controllers
         }
 
         [HttpGet("by-participant")]
-        public ActionResult<IEnumerable<ConversationDetailsDto>> GetByParticipant()
+        public ActionResult<IEnumerable<ConversationDetailsResponse>> GetByParticipant()
         {
             var conversations = _conversationService.GetByParticipant();
             if (conversations == null || !conversations.Any())
@@ -29,7 +29,7 @@ namespace VibLink.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ConversationDetailsDto> GetById([FromRoute] string id)
+        public ActionResult<ConversationDetailsResponse> GetById([FromRoute] string id)
         {
             if (!ObjectId.TryParse(id, out var objectId))
             {

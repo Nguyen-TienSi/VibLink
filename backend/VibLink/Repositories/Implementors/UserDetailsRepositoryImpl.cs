@@ -6,8 +6,7 @@ namespace VibLink.Repositories.Implementors
 {
     public class UserDetailsRepositoryImpl : MongoRepositoryImpl<UserDetails>, IUserDetailsRepository
     {
-        public UserDetailsRepositoryImpl(VibLinkDbContext dbContext)
-            : base(dbContext)
+        public UserDetailsRepositoryImpl(VibLinkDbContext dbContext) : base(dbContext)
         {
         }
 
@@ -21,6 +20,11 @@ namespace VibLink.Repositories.Implementors
         {
             var user = this.FindByIdAsync(objectId).Result;
             return user?.BlockedUsers ?? Enumerable.Empty<UserDetails>();
+        }
+
+        public UserDetails? FindByEmail(string email)
+        {
+            return AsQueryable().FirstOrDefault(u => u.Email == email);
         }
     }
 }

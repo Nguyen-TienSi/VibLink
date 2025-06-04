@@ -1,6 +1,6 @@
 ﻿namespace VibLink.Models.DTOs.Shared
 {
-    public enum UserStatusDto
+    public enum UserStatus
     {
         ONLINE,
         OFFLINE,

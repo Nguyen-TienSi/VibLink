@@ -1,6 +1,6 @@
 ﻿namespace VibLink.Models.DTOs.Shared
 {
-    public enum UserRoleDto
+    public enum UserRole
     {
         ADMIN,
         USER

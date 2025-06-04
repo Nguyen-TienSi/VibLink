@@ -5,8 +5,7 @@ namespace VibLink.Repositories.Implementors
 {
     public class MessageRepositoryImpl : MongoRepositoryImpl<Message>, IMessageRepository
     {
-        public MessageRepositoryImpl(VibLinkDbContext dbContext)
-            : base(dbContext)
+        public MessageRepositoryImpl(VibLinkDbContext dbContext) : base(dbContext)
         {
         }
     }

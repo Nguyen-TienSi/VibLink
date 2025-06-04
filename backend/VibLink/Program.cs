@@ -1,4 +1,5 @@
 
+using System.Text.Json;
 using VibLink.Data;
 using VibLink.Extensions;
 
@@ -17,7 +18,11 @@ namespace VibLink
 
             builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

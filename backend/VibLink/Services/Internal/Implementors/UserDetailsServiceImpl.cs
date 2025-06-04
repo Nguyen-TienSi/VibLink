@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using MongoDB.Bson;
-using VibLink.Http;
+using VibLink.Helpers;
 using VibLink.Models.DTOs.Response;
 using VibLink.Models.Entities;
 using VibLink.Repositories;
@@ -24,30 +24,30 @@ namespace VibLink.Services.Internal.Implementors
             _httpContextManager = httpContextManager;
         }
 
-        public IEnumerable<UserFriendSummaryDto> GetUserFriends()
+        public IEnumerable<UserFriendSummaryResponse> GetUserFriends()
         {
             var objectId = ObjectId.Parse(_httpContextManager.GetUserId());
             var userFriends = _userDetailsRepository.FindUserFriends(objectId);
 
-            return _mapper.Map<IEnumerable<UserFriendSummaryDto>>(userFriends);
+            return _mapper.Map<IEnumerable<UserFriendSummaryResponse>>(userFriends);
         }
 
-        public IEnumerable<BlockedUserSummaryDto> GetBlockedUsers()
+        public IEnumerable<BlockedUserSummaryResponse> GetBlockedUsers()
         {
             var objectId = ObjectId.Parse(_httpContextManager.GetUserId());
             var blockedUsers = _userDetailsRepository.FindBlockedUsers(objectId);
-            return _mapper.Map<IEnumerable<BlockedUserSummaryDto>>(blockedUsers);
+            return _mapper.Map<IEnumerable<BlockedUserSummaryResponse>>(blockedUsers);
         }
 
-        public UserDetailsDto GetUserDetails()
+        public UserDetailsResponse GetUserDetails()
         {
             var objectId = ObjectId.Parse(_httpContextManager.GetUserId());
             var userDetails = _userDetailsRepository.FindByIdAsync(objectId).Result;
 
-            return _mapper.Map<UserDetailsDto>(userDetails);
+            return _mapper.Map<UserDetailsResponse>(userDetails);
         }
 
-        public UserDetailsDto PatchUserDetails(JsonPatchDocument<UserDetails> patchDocument)
+        public UserDetailsResponse PatchUserDetails(JsonPatchDocument<UserDetails> patchDocument)
         {
             var objectId = ObjectId.Parse(_httpContextManager.GetUserId());
             var userDetails = _userDetailsRepository.FindByIdAsync(objectId).Result;
@@ -56,7 +56,7 @@ namespace VibLink.Services.Internal.Implementors
 
             _userDetailsRepository.ReplaceOneAsync(objectId, userDetails!);
 
-            return _mapper.Map<UserDetailsDto>(userDetails);
+            return _mapper.Map<UserDetailsResponse>(userDetails);
         }
     }
 }

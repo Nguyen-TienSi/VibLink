@@ -1,6 +1,6 @@
-﻿namespace VibLink.Models.DTOs.Shared
+﻿namespace VibLink.Models.DTOs.Response
 {
-    public record AuditMetadataDto
+    public record AuditMetadataResponse
     {
         public DateTime CreateAt { get; init; }
         public DateTime UpdateAt { get; init; }

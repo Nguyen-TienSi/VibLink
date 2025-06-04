@@ -6,12 +6,12 @@ namespace VibLink.Services.Internal
 {
     public interface IUserDetailsService
     {
-        IEnumerable<UserFriendSummaryDto> GetUserFriends();
+        IEnumerable<UserFriendSummaryResponse> GetUserFriends();
 
-        IEnumerable<BlockedUserSummaryDto> GetBlockedUsers();
+        IEnumerable<BlockedUserSummaryResponse> GetBlockedUsers();
 
-        UserDetailsDto GetUserDetails();
+        UserDetailsResponse GetUserDetails();
 
-        UserDetailsDto PatchUserDetails(JsonPatchDocument<UserDetails> patchDocument);
+        UserDetailsResponse PatchUserDetails(JsonPatchDocument<UserDetails> patchDocument);
     }
 }

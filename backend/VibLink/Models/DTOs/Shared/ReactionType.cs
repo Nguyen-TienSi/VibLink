@@ -1,6 +1,6 @@
 ﻿namespace VibLink.Models.DTOs.Shared
 {
-    public enum ReactionTypeDto
+    public enum ReactionType
     {
         LIKE,
         LOVE,

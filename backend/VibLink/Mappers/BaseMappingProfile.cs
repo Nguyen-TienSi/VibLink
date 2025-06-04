@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using VibLink.Models.DTOs.Shared;
+using VibLink.Models.DTOs.Response;
 using VibLink.Models.Entities;
 
 namespace VibLink.Mappers
@@ -8,7 +8,7 @@ namespace VibLink.Mappers
     {
         public BaseMappingProfile()
         {
-            CreateMap<BaseEntity, AuditMetadataDto>()
+            CreateMap<BaseEntity, AuditMetadataResponse>()
                 .ForMember(dest => dest.CreateAt, opt => opt.MapFrom(src => src.CreatedAt))
                 .ForMember(dest => dest.UpdateAt, opt => opt.MapFrom(src => src.UpdatedAt))
                 .ForMember(dest => dest.DeleteAt, opt => opt.MapFrom(src => src.DeletedAt))

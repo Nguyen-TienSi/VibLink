@@ -5,8 +5,8 @@ namespace VibLink.Services.Internal
 {
     public interface IConversationService
     {
-        IEnumerable<ConversationDetailsDto> GetByParticipant();
+        IEnumerable<ConversationDetailsResponse> GetByParticipant();
 
-        ConversationDetailsDto? GetById(ObjectId id);
+        ConversationDetailsResponse? GetById(ObjectId id);
     }
 }
