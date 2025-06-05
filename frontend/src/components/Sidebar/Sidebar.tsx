@@ -1,5 +1,5 @@
 import FriendItem from './FriendItem'
-import { friends } from '../../data/models/response/FriendData'
+import { friends } from '../../data/models/response/UserFriendSummaryResponse'
 
 const Sidebar: React.FC = () => {
   return (

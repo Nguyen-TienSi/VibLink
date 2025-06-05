@@ -35,10 +35,24 @@ export default class HttpApiProvider extends HttpProvider implements ApiProvider
     try {
       const finalUrl = this.resolveUrl(endpoint, params)
       const finalHeaders = this.mergeHeaders(headers)
+      let requestBody: BodyInit | undefined
+
+      if (body instanceof FormData) {
+        requestBody = body
+        // Remove Content-Type so browser sets correct boundary for multipart/form-data
+        finalHeaders.delete('Content-Type')
+      } else if (body) {
+        requestBody = JSON.stringify(body)
+
+        if (method === HttpMethod.PATCH) {
+          finalHeaders.set('Content-Type', 'application/json-patch+json')
+        }
+      }
+
       const requestOptions: RequestInit = {
         method,
         headers: finalHeaders,
-        body: body ? JSON.stringify(body) : undefined
+        body: requestBody
       }
 
       const response: Response = await fetch(finalUrl, requestOptions)
