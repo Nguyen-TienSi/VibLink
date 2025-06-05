@@ -3,24 +3,30 @@ using VibLink.Models.DTOs.Request;
 using VibLink.Models.Entities;
 using VibLink.Repositories;
 using VibLink.Helpers;
+using VibLink.Mappers;
 
 namespace VibLink.Services.Internal.Implementors
 {
     public class AuthServiceImpl : IAuthService
     {
         private readonly IUserDetailsRepository _userDetailsRepository;
+        private readonly IFileStorageRepository _fileStorageRepository;
         private readonly IMapper _mapper;
         private readonly AuthManager _authManager = new();
 
-        public AuthServiceImpl(IUserDetailsRepository userDetailsRepository, IMapper mapper)
+        public AuthServiceImpl(
+            IUserDetailsRepository userDetailsRepository,
+            IFileStorageRepository fileStorageRepository,
+            IMapper mapper)
         {
             _userDetailsRepository = userDetailsRepository;
+            _fileStorageRepository = fileStorageRepository;
             _mapper = mapper;
         }
 
-        public (bool IsSuccess, string? Token, string? ErrorMessage) Login(string email, string password)
+        public async Task<(bool IsSuccess, string? Token, string? ErrorMessage)> LoginAsync(string email, string password)
         {
-            var user = _userDetailsRepository.FindByEmail(email);
+            var user = await _userDetailsRepository.FindByEmailAsync(email);
             if (user == null)
                 return (false, null, "User not found.");
 
@@ -32,9 +38,9 @@ namespace VibLink.Services.Internal.Implementors
             return (true, token, null);
         }
 
-        public (bool IsSuccess, string? Token, string? ErrorMessage) Register(UserRegisterRequest userRegisterRequest)
+        public async Task<(bool IsSuccess, string? Token, string? ErrorMessage)> RegisterAsync(UserRegisterRequest userRegisterRequest)
         {
-            var existing = _userDetailsRepository.FindByEmail(userRegisterRequest.Email);
+            var existing = await _userDetailsRepository.FindByEmailAsync(userRegisterRequest.Email);
             if (existing != null)
                 return (false, null, "Email already registered.");
 
@@ -42,6 +48,13 @@ namespace VibLink.Services.Internal.Implementors
                 userRegisterRequest,
                 opt => opt.Items["PasswordHasher"] = (Func<string, string>)_authManager.HashPassword
             );
+
+            if (userRegisterRequest.Picture != null)
+            {
+                var picture = _mapper.Map<FileStorage>(userRegisterRequest.Picture);
+                await _fileStorageRepository.InsertOneAsync(picture);
+                user.PictureId = picture.Id;
+            }
 
             _userDetailsRepository.InsertOneAsync(user).Wait();
 

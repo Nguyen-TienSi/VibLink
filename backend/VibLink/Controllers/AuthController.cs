@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using VibLink.Models.DTOs.Request;
 using VibLink.Services.Internal;
 
@@ -17,13 +18,13 @@ namespace VibLink.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             {
                 return BadRequest("Invalid login request.");
             }
-            var result = _authService.Login(request.Email, request.Password);
+            var result = await _authService.LoginAsync(request.Email, request.Password);
             if (result.IsSuccess)
             {
                 return Ok(result.Token);
@@ -32,13 +33,13 @@ namespace VibLink.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] UserRegisterRequest request)
+        public async Task<IActionResult> Register([FromForm] UserRegisterRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             {
                 return BadRequest("Invalid registration request.");
             }
-            var result = _authService.Register(request);
+            var result = await _authService.RegisterAsync(request);
             if (result.IsSuccess)
             {
                 return Ok(result.Token);

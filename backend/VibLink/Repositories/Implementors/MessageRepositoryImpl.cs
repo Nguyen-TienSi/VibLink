@@ -1,4 +1,5 @@
-﻿using VibLink.Data;
+﻿using MongoDB.Bson;
+using VibLink.Data;
 using VibLink.Models.Entities;
 
 namespace VibLink.Repositories.Implementors

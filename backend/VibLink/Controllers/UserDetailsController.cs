@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using VibLink.Models.Entities;
 using VibLink.Services.Internal;
 
@@ -18,9 +19,9 @@ namespace VibLink.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetUserFriends()
+        public async Task<IActionResult> GetUserFriends()
         {
-            var userFriends = _userDetailsService.GetUserFriends();
+            var userFriends = await _userDetailsService.GetUserFriends();
             if (userFriends == null || !userFriends.Any())
             {
                 return NotFound("No friends found for the user.");
@@ -29,9 +30,9 @@ namespace VibLink.Controllers
         }
 
         [HttpGet("blocked")]
-        public IActionResult GetBlockedUsers()
+        public async Task<IActionResult> GetBlockedUsers()
         {
-            var blockedUsers = _userDetailsService.GetBlockedUsers();
+            var blockedUsers = await _userDetailsService.GetBlockedUsers();
             if (blockedUsers == null || !blockedUsers.Any())
             {
                 return NotFound("No blocked users found.");
@@ -40,9 +41,9 @@ namespace VibLink.Controllers
         }
 
         [HttpGet("details")]
-        public IActionResult GetUserDetails()
+        public async Task<IActionResult> GetUserDetails()
         {
-            var userDetails = _userDetailsService.GetUserDetails();
+            var userDetails = await _userDetailsService.GetUserDetails();
             if (userDetails == null)
             {
                 return NotFound("User details not found.");
@@ -51,14 +52,14 @@ namespace VibLink.Controllers
         }
 
         [HttpPatch("details")]
-        public IActionResult PatchUserDetails([FromBody] JsonPatchDocument<UserDetails> patchDocument)
+        public async Task<IActionResult> PatchUserDetails([FromBody] JsonPatchDocument<UserDetails> patchDocument)
         {
             if (patchDocument == null)
             {
                 return BadRequest("Invalid patch document.");
             }
 
-            var patchedUserDetails = _userDetailsService.PatchUserDetails(patchDocument);
+            var patchedUserDetails = await _userDetailsService.PatchUserDetails(patchDocument);
 
             return Ok(patchedUserDetails);
         }

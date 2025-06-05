@@ -1,4 +1,4 @@
-﻿namespace VibLink.Models.Enumurations
+﻿namespace VibLink.Models.Enumerations
 {
     public enum FriendRequestStatus
     {

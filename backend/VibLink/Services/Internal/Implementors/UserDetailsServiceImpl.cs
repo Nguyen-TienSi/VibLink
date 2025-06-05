@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using MongoDB.Bson;
+using System.Threading.Tasks;
 using VibLink.Helpers;
 using VibLink.Models.DTOs.Response;
 using VibLink.Models.Entities;
@@ -24,37 +25,37 @@ namespace VibLink.Services.Internal.Implementors
             _httpContextManager = httpContextManager;
         }
 
-        public IEnumerable<UserFriendSummaryResponse> GetUserFriends()
+        public async Task<IEnumerable<UserFriendSummaryResponse>> GetUserFriends()
         {
             var objectId = ObjectId.Parse(_httpContextManager.GetUserId());
-            var userFriends = _userDetailsRepository.FindUserFriends(objectId);
+            var userFriends = await _userDetailsRepository.FindUserFriendsAsync(objectId);
 
             return _mapper.Map<IEnumerable<UserFriendSummaryResponse>>(userFriends);
         }
 
-        public IEnumerable<BlockedUserSummaryResponse> GetBlockedUsers()
+        public async Task<IEnumerable<BlockedUserSummaryResponse>> GetBlockedUsers()
         {
             var objectId = ObjectId.Parse(_httpContextManager.GetUserId());
-            var blockedUsers = _userDetailsRepository.FindBlockedUsers(objectId);
+            var blockedUsers = await _userDetailsRepository.FindBlockedUsersAsync(objectId);
             return _mapper.Map<IEnumerable<BlockedUserSummaryResponse>>(blockedUsers);
         }
 
-        public UserDetailsResponse GetUserDetails()
+        public async Task<UserDetailsResponse?> GetUserDetails()
         {
             var objectId = ObjectId.Parse(_httpContextManager.GetUserId());
-            var userDetails = _userDetailsRepository.FindByIdAsync(objectId).Result;
+            var userDetails = await _userDetailsRepository.FindByIdAsync(objectId);
 
             return _mapper.Map<UserDetailsResponse>(userDetails);
         }
 
-        public UserDetailsResponse PatchUserDetails(JsonPatchDocument<UserDetails> patchDocument)
+        public async Task<UserDetailsResponse> PatchUserDetails(JsonPatchDocument<UserDetails> patchDocument)
         {
             var objectId = ObjectId.Parse(_httpContextManager.GetUserId());
-            var userDetails = _userDetailsRepository.FindByIdAsync(objectId).Result;
+            var userDetails = await _userDetailsRepository.FindByIdAsync(objectId);
 
             patchDocument.ApplyTo(userDetails!);
 
-            _userDetailsRepository.ReplaceOneAsync(objectId, userDetails!);
+            await _userDetailsRepository.ReplaceOneAsync(objectId, userDetails!);
 
             return _mapper.Map<UserDetailsResponse>(userDetails);
         }

@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.EntityFrameworkCore;
-using VibLink.Models.Enums;
+using VibLink.Models.Enumerations;
 
 namespace VibLink.Models.Entities
 {
@@ -16,16 +16,23 @@ namespace VibLink.Models.Entities
         public string Email { get; set; } = string.Empty;
         [BsonElement("passwordHash")]
         public string PasswordHash { get; set; } = string.Empty;
-        [BsonElement("pictureUrl")]
-        public string PictureUrl { get; set; } = string.Empty;
+        [BsonElement("pictureId")]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public ObjectId? PictureId { get; set; } = null;
+        [BsonIgnore]
+        public FileStorage? Picture { get; set; } = null;
         [BsonElement("user_roles")]
         [BsonRepresentation(BsonType.String)]
         public ICollection<UserRole> UserRoles { get; set; } = [];
         [BsonElement("lastLogin")]
         public DateTime LastLogin { get; set; } = DateTime.UtcNow;
-        [BsonElement("friends")]
+        [BsonElement("friendIds")]
+        public ICollection<ObjectId> FriendIds { get; set; } = [];
+        [BsonIgnore]
         public ICollection<UserDetails>? Friends { get; set; }
-        [BsonElement("blockedUsers")]
+        [BsonElement("blockedUserIds")]
+        public ICollection<ObjectId> BlockedUserIds { get; set; } = [];
+        [BsonIgnore]
         public ICollection<UserDetails>? BlockedUsers { get; set; }
 
     }

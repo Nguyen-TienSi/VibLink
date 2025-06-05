@@ -15,5 +15,7 @@ namespace VibLink.Models.DTOs.Request
 
         [Required]
         public string LastName { get; init; } = string.Empty;
+
+        public IFormFile? Picture { get; init; } = null;
     }
 }

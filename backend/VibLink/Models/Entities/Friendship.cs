@@ -1,17 +1,21 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.EntityFrameworkCore;
-using VibLink.Models.Enumurations;
+using VibLink.Models.Enumerations;
 
 namespace VibLink.Models.Entities
 {
     [Collection("friendships")]
     public class Friendship : BaseEntity
     {
-        [BsonElement("requester")]
-        public required UserDetails Requester { get; set; }
-        [BsonElement("addressee")]
-
-        public required UserDetails Addressee { get; set; }
+        [BsonElement("requesterId")]
+        public ObjectId RequesterId { get; set; }
+        [BsonIgnore]
+        public UserDetails Requester { get; set; } = null!;
+        [BsonElement("addresseeId")]
+        public ObjectId AddresseeId { get; set; }
+        [BsonIgnore]
+        public UserDetails Addressee { get; set; } = null!;
         [BsonElement("friend_request_status")]
         public FriendRequestStatus FriendRequestStatus { get; set; }
     }

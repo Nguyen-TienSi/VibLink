@@ -5,6 +5,6 @@ namespace VibLink.Repositories
 {
     public interface IConversationRepository : IMongoRepository<Conversation>
     {
-        public IEnumerable<Conversation> FindByParticipant(UserDetails userDetails);
+        Task<IEnumerable<Conversation>> FindByParticipantId(ObjectId objectId);
     }
 }

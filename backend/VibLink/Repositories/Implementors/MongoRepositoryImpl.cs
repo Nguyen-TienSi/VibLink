@@ -25,6 +25,8 @@ namespace VibLink.Repositories.Implementors
             throw new ArgumentException($"Collection name not found for {documentType.Name}.");
         }
 
+        public IMongoCollection<TEntity> GetMongoCollection() => _mongoCollection;
+
         public virtual IQueryable<TEntity> AsQueryable()
         {
             return _mongoCollection.AsQueryable();
@@ -47,6 +49,8 @@ namespace VibLink.Repositories.Implementors
 
         public virtual async Task ReplaceOneAsync(ObjectId id, TEntity entity)
         {
+            entity.UpdatedAt = DateTime.UtcNow;
+            entity.Version += 1;
             await _mongoCollection.ReplaceOneAsync(x => x.Id == id, entity);
         }
 

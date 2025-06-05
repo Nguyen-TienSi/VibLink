@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using VibLink.Models.Entities;
-using VibLink.Models.Enums;
+using VibLink.Models.Enumerations;
 using VibLink.Models.Settings;
 
 namespace VibLink.Data
@@ -25,7 +25,7 @@ namespace VibLink.Data
                         LastName = "Doe",
                         Email = "john.doe@example.com",
                         PasswordHash = "hashedpassword1",
-                        PictureUrl = "https://example.com/john.jpg",
+                        Picture = new(),
                         UserRoles = [UserRole.USER],
                         LastLogin = DateTime.UtcNow,
                         Friends = [],
@@ -36,7 +36,7 @@ namespace VibLink.Data
                         LastName = "Smith",
                         Email = "jane.smith@example.com",
                         PasswordHash = "hashedpassword2",
-                        PictureUrl = "https://example.com/jane.jpg",
+                        Picture = new(),
                         UserRoles = [UserRole.ADMIN],
                         LastLogin = DateTime.UtcNow,
                         Friends = [],

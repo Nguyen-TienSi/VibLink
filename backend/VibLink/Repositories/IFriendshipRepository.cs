@@ -1,9 +1,14 @@
-﻿using VibLink.Models.Entities;
+﻿using MongoDB.Bson;
+using VibLink.Models.Entities;
 
 namespace VibLink.Repositories
 {
     public interface IFriendshipRepository : IMongoRepository<Friendship>
     {
-        IEnumerable<Friendship> FindByAddressee(UserDetails addressee);
+        Task<IEnumerable<Friendship>> FindByRequesterIdAsync(ObjectId requesterId);
+
+        Task<IEnumerable<Friendship>> FindByAddresseeIdAsync(ObjectId addresseeId);
+
+        Task<Friendship> FindByRequesterIdAndAddresseeIdAsync(ObjectId requesterId, ObjectId addresseeId);
     }
 }

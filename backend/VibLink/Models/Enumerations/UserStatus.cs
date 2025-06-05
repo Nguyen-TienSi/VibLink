@@ -1,4 +1,4 @@
-﻿namespace VibLink.Models.Enums
+﻿namespace VibLink.Models.Enumerations
 {
     public enum UserStatus
     {

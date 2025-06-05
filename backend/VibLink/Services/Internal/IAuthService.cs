@@ -4,7 +4,7 @@ namespace VibLink.Services.Internal
 {
     public interface IAuthService
     {
-        (bool IsSuccess, string? Token, string? ErrorMessage) Login(string email, string password);
-        (bool IsSuccess, string? Token, string? ErrorMessage) Register(UserRegisterRequest userRegisterRequest);
+        Task<(bool IsSuccess, string? Token, string? ErrorMessage)> LoginAsync(string email, string password);
+        Task<(bool IsSuccess, string? Token, string? ErrorMessage)> RegisterAsync(UserRegisterRequest userRegisterRequest);
     }
 }

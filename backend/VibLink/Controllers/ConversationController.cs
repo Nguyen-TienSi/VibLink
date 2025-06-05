@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using System.Threading.Tasks;
+using VibLink.Models.DTOs.Request;
 using VibLink.Models.DTOs.Response;
 using VibLink.Services.Internal;
 
@@ -18,9 +20,9 @@ namespace VibLink.Controllers
         }
 
         [HttpGet("by-participant")]
-        public ActionResult<IEnumerable<ConversationDetailsResponse>> GetByParticipant()
+        public async Task<IActionResult> GetByParticipant()
         {
-            var conversations = _conversationService.GetByParticipant();
+            var conversations = await _conversationService.GetByParticipant();
             if (conversations == null || !conversations.Any())
             {
                 return NotFound("No conversations found for the participant.");
@@ -29,18 +31,29 @@ namespace VibLink.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ConversationDetailsResponse> GetById([FromRoute] string id)
+        public async Task<IActionResult> GetById([FromRoute] string id)
         {
             if (!ObjectId.TryParse(id, out var objectId))
             {
                 return BadRequest("Invalid conversation ID format.");
             }
-            var conversation = _conversationService.GetById(objectId);
+            var conversation = await _conversationService.GetById(objectId);
             if (conversation == null)
             {
                 return NotFound($"Conversation with ID {id} not found.");
             }
             return Ok(conversation);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateConversation([FromBody] ConversationCreateRequest conversationCreateRequest)
+        {
+            if (conversationCreateRequest == null)
+            {
+                return BadRequest("Conversation data is required.");
+            }
+            var createdConversation = await _conversationService.InsertOneAsync(conversationCreateRequest);
+            return CreatedAtAction(nameof(GetById), new { createdConversation.Id }, createdConversation);
         }
     }
 }

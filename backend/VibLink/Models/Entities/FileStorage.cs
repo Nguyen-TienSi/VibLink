@@ -4,7 +4,7 @@ using MongoDB.EntityFrameworkCore;
 
 namespace VibLink.Models.Entities
 {
-    [Collection("file_metadata")]
+    [Collection("file_storage")]
     public class FileStorage : BaseEntity
     {
         [BsonElement("fileName")]

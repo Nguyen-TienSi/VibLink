@@ -1,12 +1,15 @@
 ﻿using MongoDB.Bson;
+using VibLink.Models.DTOs.Request;
 using VibLink.Models.DTOs.Response;
 
 namespace VibLink.Services.Internal
 {
     public interface IConversationService
     {
-        IEnumerable<ConversationDetailsResponse> GetByParticipant();
+        Task<IEnumerable<ConversationDetailsResponse>> GetByParticipant();
 
-        ConversationDetailsResponse? GetById(ObjectId id);
+        Task<ConversationDetailsResponse?> GetById(ObjectId id);
+
+        Task<ConversationDetailsResponse> InsertOneAsync(ConversationCreateRequest conversationCreateRequest);
     }
 }
