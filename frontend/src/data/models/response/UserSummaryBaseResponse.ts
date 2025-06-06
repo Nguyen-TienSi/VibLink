@@ -3,6 +3,7 @@ export default class UserSummaryBaseResponse {
     public readonly Id: string,
     public readonly FirstName: string,
     public readonly LastName: string,
+    public readonly Email: string,
     public readonly PictureUrl: string
   ) {}
 
@@ -11,6 +12,7 @@ export default class UserSummaryBaseResponse {
       json['id'] as string,
       json['firstName'] as string,
       json['lastName'] as string,
+      json['email'] as string,
       json['pictureUrl'] as string
     )
   }
@@ -20,6 +22,7 @@ export default class UserSummaryBaseResponse {
       id: this.Id,
       firstName: this.FirstName,
       lastName: this.LastName,
+      email: this.Email,
       pictureUrl: this.PictureUrl
     }
   }

@@ -13,5 +13,7 @@ namespace VibLink.Services.Internal
         Task<UserDetailsResponse?> GetUserDetails();
 
         Task<UserDetailsResponse> PatchUserDetails(JsonPatchDocument<UserDetails> patchDocument);
+
+        Task<UserSummaryBaseResponse?> GetByEmail(string email);
     }
 }

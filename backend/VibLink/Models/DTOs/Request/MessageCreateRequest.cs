@@ -9,6 +9,6 @@ namespace VibLink.Models.DTOs.Request
 
         public MessageType MessageType { get; init; }
 
-        public ObjectId ConversationId { get; init; }
+        public string ConversationId { get; init; } = string.Empty;
     }
 }

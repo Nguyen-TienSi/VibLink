@@ -98,7 +98,7 @@ namespace VibLink.Services.Internal.Implementors
             {
                 RequesterId = requesterId,
                 AddresseeId = addresseeId,
-                FriendRequestStatus = Models.Enumerations.FriendRequestStatus.PENDING
+                FriendshipRequestStatus = Models.Enumerations.FriendshipRequestStatus.PENDING
             };
 
             await _friendshipRepository.InsertOneAsync(friendship);
@@ -106,7 +106,7 @@ namespace VibLink.Services.Internal.Implementors
             return _mapper.Map<FriendshipDetailsResponse>(friendship);
         }
 
-        public async Task<FriendshipDetailsResponse> UpdateByRequesterAsync(ObjectId addresseeId, Models.DTOs.Shared.FriendRequestStatus status)
+        public async Task<FriendshipDetailsResponse> UpdateByRequesterAsync(ObjectId addresseeId, Models.DTOs.Shared.FriendshipRequestStatus status)
         {
             var requesterId = ObjectId.Parse(_httpContextManager.GetUserId());
             var friendship = await _friendshipRepository.FindByRequesterIdAndAddresseeIdAsync(requesterId, addresseeId);
@@ -116,13 +116,13 @@ namespace VibLink.Services.Internal.Implementors
                 throw new InvalidOperationException("Friendship not found.");
             }
 
-            friendship.FriendRequestStatus = (Models.Enumerations.FriendRequestStatus)status;
+            friendship.FriendshipRequestStatus = (Models.Enumerations.FriendshipRequestStatus)status;
             await _friendshipRepository.ReplaceOneAsync(friendship.Id, friendship);
 
             return _mapper.Map<FriendshipDetailsResponse>(friendship);
         }
 
-        public async Task<FriendshipDetailsResponse> UpdateByAddresseeAsync(ObjectId requesterId, Models.DTOs.Shared.FriendRequestStatus status)
+        public async Task<FriendshipDetailsResponse> UpdateByAddresseeAsync(ObjectId requesterId, Models.DTOs.Shared.FriendshipRequestStatus status)
         {
             var addresseeId = ObjectId.Parse(_httpContextManager.GetUserId());
             var friendship = await _friendshipRepository.FindByRequesterIdAndAddresseeIdAsync(requesterId, addresseeId);
@@ -132,7 +132,7 @@ namespace VibLink.Services.Internal.Implementors
                 throw new InvalidOperationException("Friendship not found.");
             }
 
-            friendship.FriendRequestStatus = (Models.Enumerations.FriendRequestStatus)status;
+            friendship.FriendshipRequestStatus = (Models.Enumerations.FriendshipRequestStatus)status;
             await _friendshipRepository.ReplaceOneAsync(friendship.Id, friendship);
 
             return _mapper.Map<FriendshipDetailsResponse>(friendship);

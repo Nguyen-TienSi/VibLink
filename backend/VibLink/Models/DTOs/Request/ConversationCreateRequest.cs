@@ -12,6 +12,6 @@ namespace VibLink.Models.DTOs.Request
 
         public ConversationType ConversationType { get; init; }
 
-        public ICollection<ObjectId> ParticipantIds { get; init; } = [];
+        public ICollection<string> ParticipantIds { get; init; } = [];
     }
 }

@@ -48,9 +48,12 @@ namespace VibLink.Services.Internal.Implementors
                 opt => opt.Items["SenderId"] = senderId
             );
 
+            if (!ObjectId.TryParse(messageCreateRequest.ConversationId, out var conversationId))
+                throw new ArgumentException("Invalid ConversationId format.");
+
             await _messageRepository.InsertOneAsync(message);
 
-            var conversation = await _conversationRepository.FindByIdAsync(messageCreateRequest.ConversationId);
+            var conversation = await _conversationRepository.FindByIdAsync(conversationId);
             if (conversation != null)
             {
                 conversation.MessageIds.Add(message.Id);

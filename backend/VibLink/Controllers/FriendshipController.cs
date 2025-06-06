@@ -38,13 +38,13 @@ namespace VibLink.Controllers
         }
 
         [HttpGet("requester/{addresseeId}")]
-        public async Task<IActionResult> GetByRequester([FromRoute] ObjectId addresseeId)
+        public async Task<IActionResult> GetByRequester([FromRoute] string addresseeId)
         {
-            if (addresseeId == ObjectId.Empty)
+            if (!ObjectId.TryParse(addresseeId, out var objectId) || objectId == ObjectId.Empty)
             {
-                return BadRequest("Addressee ID cannot be empty.");
+                return BadRequest("Addressee ID is invalid or empty.");
             }
-            var friendship = await _friendshipService.GetByRequesterAsync(addresseeId);
+            var friendship = await _friendshipService.GetByRequesterAsync(objectId);
             if (friendship == null)
             {
                 return NotFound("Friendship not found for the given addressee ID.");
@@ -53,13 +53,13 @@ namespace VibLink.Controllers
         }
 
         [HttpGet("addressee/{requesterId}")]
-        public async Task<IActionResult> GetByAddressee([FromRoute] ObjectId requesterId)
+        public async Task<IActionResult> GetByAddressee([FromRoute] string requesterId)
         {
-            if (requesterId == ObjectId.Empty)
+            if (!ObjectId.TryParse(requesterId, out var objectId) || objectId == ObjectId.Empty)
             {
-                return BadRequest("Requester ID cannot be empty.");
+                return BadRequest("Requester ID is invalid or empty.");
             }
-            var friendship = await _friendshipService.GetByAddresseeAsync(requesterId);
+            var friendship = await _friendshipService.GetByAddresseeAsync(objectId);
             if (friendship == null)
             {
                 return NotFound("Friendship not found for the given requester ID.");
@@ -68,35 +68,35 @@ namespace VibLink.Controllers
         }
 
         [HttpPost("{addresseeId}")]
-        public async Task<IActionResult> InsertByRequester([FromRoute] ObjectId addresseeId)
+        public async Task<IActionResult> InsertByRequester([FromRoute] string addresseeId)
         {
-            if (addresseeId == ObjectId.Empty)
+            if (!ObjectId.TryParse(addresseeId, out var objectId) || objectId == ObjectId.Empty)
             {
-                return BadRequest("Addressee ID cannot be empty.");
+                return BadRequest("Addressee ID is invalid or empty.");
             }
-            var friendship = await _friendshipService.InsertByRequesterAsync(addresseeId);
+            var friendship = await _friendshipService.InsertByRequesterAsync(objectId);
             return CreatedAtAction(nameof(GetByRequester), new { addresseeId }, friendship);
         }
 
         [HttpPut("requester/{addresseeId}")]
-        public async Task<IActionResult> UpdateByRequester([FromRoute] ObjectId addresseeId, [FromBody] Models.DTOs.Shared.FriendRequestStatus status)
+        public async Task<IActionResult> UpdateByRequester([FromRoute] string addresseeId, [FromBody] Models.DTOs.Shared.FriendshipRequestStatus status)
         {
-            if (addresseeId == ObjectId.Empty)
+            if (!ObjectId.TryParse(addresseeId, out var objectId) || objectId == ObjectId.Empty)
             {
-                return BadRequest("Addressee ID cannot be empty.");
+                return BadRequest("Addressee ID is invalid or empty.");
             }
-            var friendship = await _friendshipService.UpdateByRequesterAsync(addresseeId, status);
+            var friendship = await _friendshipService.UpdateByRequesterAsync(objectId, status);
             return Ok(friendship);
         }
 
         [HttpPut("addressee/{requesterId}")]
-        public async Task<IActionResult> UpdateByAddressee([FromRoute] ObjectId requesterId, [FromBody] Models.DTOs.Shared.FriendRequestStatus status)
+        public async Task<IActionResult> UpdateByAddressee([FromRoute] string requesterId, [FromBody] Models.DTOs.Shared.FriendshipRequestStatus status)
         {
-            if (requesterId == ObjectId.Empty)
+            if (!ObjectId.TryParse(requesterId, out var objectId) || objectId == ObjectId.Empty)
             {
-                return BadRequest("Requester ID cannot be empty.");
+                return BadRequest("Requester ID is invalid or empty.");
             }
-            var friendship = await _friendshipService.UpdateByAddresseeAsync(requesterId, status);
+            var friendship = await _friendshipService.UpdateByAddresseeAsync(objectId, status);
             return Ok(friendship);
         }
     }

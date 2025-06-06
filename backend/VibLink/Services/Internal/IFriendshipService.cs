@@ -18,8 +18,8 @@ namespace VibLink.Services.Internal
 
         Task<FriendshipDetailsResponse> InsertByRequesterAsync(ObjectId addresseeId);
 
-        Task<FriendshipDetailsResponse> UpdateByRequesterAsync(ObjectId addresseeId, FriendRequestStatus status);
+        Task<FriendshipDetailsResponse> UpdateByRequesterAsync(ObjectId addresseeId, FriendshipRequestStatus status);
 
-        Task<FriendshipDetailsResponse> UpdateByAddresseeAsync(ObjectId requesterId, FriendRequestStatus status);
+        Task<FriendshipDetailsResponse> UpdateByAddresseeAsync(ObjectId requesterId, FriendshipRequestStatus status);
     }
 }

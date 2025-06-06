@@ -18,6 +18,7 @@ namespace VibLink.Mappers
                 ));
 
             CreateMap<Message, MessageDetailsResponse>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Sender, opt => opt.MapFrom(src => src.Sender))
                 .ForMember(dest => dest.Recipients, opt => opt.MapFrom(src => src.Recipients))
                 .ForMember(dest => dest.SeenBy, opt => opt.MapFrom((src, dest, destMember, context) =>

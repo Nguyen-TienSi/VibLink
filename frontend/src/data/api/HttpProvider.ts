@@ -30,15 +30,11 @@ export default abstract class HttpProvider {
   }
 
   buildUrl(endpoint: string, params?: Record<string, unknown>): URL {
-    const urlObj = this.isAbsoluteUrl(endpoint) ? new URL(endpoint) : new URL(endpoint, ApiConfig.baseUrl)
+    const urlObj = new URL(endpoint, ApiConfig.baseUrl)
     if (params) {
       const queryString = new URLSearchParams(params as Record<string, string>)
       urlObj.search = queryString.toString()
     }
     return urlObj
-  }
-
-  isAbsoluteUrl(url: string): boolean {
-    return url.startsWith('http://') || url.startsWith('https://')
   }
 }

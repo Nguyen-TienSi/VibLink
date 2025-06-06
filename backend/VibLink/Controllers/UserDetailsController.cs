@@ -18,7 +18,22 @@ namespace VibLink.Controllers
             _userDetailsService = userDetailsService;
         }
 
-        [HttpGet]
+        [HttpGet("by-email/{email}")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return BadRequest("Email cannot be null or empty.");
+            }
+            var user = await _userDetailsService.GetByEmail(email);
+            if (user == null)
+            {
+                return NotFound($"User with email {email} not found.");
+            }
+            return Ok(user);
+        }
+
+        [HttpGet("friends")]
         public async Task<IActionResult> GetUserFriends()
         {
             var userFriends = await _userDetailsService.GetUserFriends();

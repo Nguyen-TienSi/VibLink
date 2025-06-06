@@ -59,5 +59,17 @@ namespace VibLink.Services.Internal.Implementors
 
             return _mapper.Map<UserDetailsResponse>(userDetails);
         }
+
+        public async Task<UserSummaryBaseResponse?> GetByEmail(string email)
+        {
+            var userDetails = await _userDetailsRepository.FindByEmailAsync(email);
+
+            if (userDetails == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<UserSummaryBaseResponse>(userDetails);
+        }
     }
 }

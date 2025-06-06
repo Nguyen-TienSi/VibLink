@@ -13,7 +13,7 @@ namespace VibLink.Mappers
                 .ForMember(dest => dest.AuditMetadataResponse, Opt => Opt.MapFrom(src => src))
                 .ForMember(dest => dest.Requester, opt => opt.MapFrom(src => src.Requester))
                 .ForMember(dest => dest.Addressee, opt => opt.MapFrom(src => src.Addressee))
-                .ForMember(dest => dest.FriendRequestStatusDto, opt => opt.MapFrom(src => (FriendRequestStatus)src.FriendRequestStatus));
+                .ForMember(dest => dest.FriendshipRequestStatus, opt => opt.MapFrom(src => (FriendshipRequestStatus)src.FriendshipRequestStatus));
         }
     }
 }

@@ -12,9 +12,8 @@ namespace VibLink.Mappers
             CreateMap<UserDetails, UserSummaryBaseResponse>()
                 .Include<UserDetails, UserFriendSummaryResponse>()
                 .Include<UserDetails, BlockedUserSummaryResponse>()
-                .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom(src =>
-                    src.Picture != null ? $"/api/filestorage/{src.Picture.Id}" : string.Empty
-                ));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom(src => !string.IsNullOrEmpty(src.PictureId.ToString()) ? $"http://localhost:5116/api/filestorage/picture/{src.PictureId}" : string.Empty));
 
             CreateMap<UserDetails, UserFriendSummaryResponse>();
 
@@ -22,10 +21,9 @@ namespace VibLink.Mappers
 
             CreateMap<UserDetails, UserDetailsResponse>()
                 .ForMember(dest => dest.AuditMetadataResponse, opt => opt.MapFrom(src => src))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.UserRoles, opt => opt.MapFrom(src => src.UserRoles.Select(role => (VibLink.Models.Enumerations.UserRole)role)))
-                .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom(src =>
-                    src.Picture != null ? $"/api/filestorage/{src.Picture.Id}" : string.Empty
-                ));
+                .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom(src => !string.IsNullOrEmpty(src.PictureId.ToString()) ? $"http://localhost:5116/api/filestorage/picture/{src.PictureId}" : string.Empty));
 
             CreateMap<UserRegisterRequest, UserDetails>()
                 .AfterMap((src, dest, context) =>

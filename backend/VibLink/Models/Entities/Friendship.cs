@@ -17,6 +17,6 @@ namespace VibLink.Models.Entities
         [BsonIgnore]
         public UserDetails Addressee { get; set; } = null!;
         [BsonElement("friend_request_status")]
-        public FriendRequestStatus FriendRequestStatus { get; set; }
+        public FriendshipRequestStatus FriendshipRequestStatus { get; set; }
     }
 }

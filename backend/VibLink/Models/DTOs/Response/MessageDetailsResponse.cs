@@ -5,7 +5,7 @@ namespace VibLink.Models.DTOs.Response
 {
     public record MessageDetailsResponse : BaseResponse
     {
-        public ObjectId Id { get; init; }
+        public string Id { get; init; } = string.Empty;
         public required UserDetailsResponse Sender { get; init; }
         public string Content { get; init; } = string.Empty;
         public MessageType MessageType { get; init; }
