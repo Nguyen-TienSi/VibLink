@@ -1,7 +1,7 @@
 export class LoginRequest {
   constructor(
-    public email: string,
-    public password: string
+    public readonly email: string,
+    public readonly password: string
   ) {}
 
   toJson(): string {

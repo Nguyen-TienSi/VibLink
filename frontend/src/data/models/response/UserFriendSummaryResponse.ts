@@ -2,14 +2,12 @@ import UserSummaryBaseResponse from './UserSummaryBaseResponse'
 
 export default class UserFriendSummaryResponse extends UserSummaryBaseResponse {
   constructor(
-    id: string,
-    firstName: string,
-    lastName: string,
-    pictureUrl: string,
-    public message: string,
-    public time: string
+    public readonly Id: string,
+    public readonly FirstName: string,
+    public readonly LastName: string,
+    public readonly PictureUrl: string
   ) {
-    super(id, firstName, lastName, pictureUrl)
+    super(Id, FirstName, LastName, PictureUrl)
   }
 
   static fromJson(json: Record<string, unknown>): UserFriendSummaryResponse {
@@ -17,30 +15,26 @@ export default class UserFriendSummaryResponse extends UserSummaryBaseResponse {
       json['id'] as string,
       json['firstName'] as string,
       json['lastName'] as string,
-      json['pictureUrl'] as string,
-      json['message'] as string,
-      json['time'] as string
+      json['pictureUrl'] as string
     )
   }
 
-  toJson(): string {
-    return JSON.stringify({
-      id: this.id,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      pictureUrl: this.pictureUrl,
-      message: this.message,
-      time: this.time
-    })
+  toJson(): object {
+    return {
+      id: this.Id,
+      firstName: this.FirstName,
+      lastName: this.LastName,
+      pictureUrl: this.PictureUrl
+    }
   }
 
   toString(): string {
-    return this.toJson()
+    return JSON.stringify(this.toJson())
   }
 }
 
 export const friends: UserFriendSummaryResponse[] = [
-  new UserFriendSummaryResponse('1', 'Osman', 'Campos', '', 'You: Hey! We are ready...', '20m'),
-  new UserFriendSummaryResponse('2', 'Jasmin', 'Lowery', '', 'You: Let’s discuss...', '1h'),
-  new UserFriendSummaryResponse('3', 'Anthony', 'Cordanes', '', 'What do you think?', '1d')
+  new UserFriendSummaryResponse('1', 'Osman', 'Campos', ''),
+  new UserFriendSummaryResponse('2', 'Jasmin', 'Lowery', ''),
+  new UserFriendSummaryResponse('3', 'Anthony', 'Cordanes', '')
 ]

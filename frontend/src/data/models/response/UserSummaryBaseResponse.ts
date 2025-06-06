@@ -1,9 +1,9 @@
 export default class UserSummaryBaseResponse {
   constructor(
-    public id: string,
-    public firstName: string,
-    public lastName: string,
-    public pictureUrl: string
+    public readonly Id: string,
+    public readonly FirstName: string,
+    public readonly LastName: string,
+    public readonly PictureUrl: string
   ) {}
 
   static fromJson(json: Record<string, unknown>): UserSummaryBaseResponse {
@@ -15,16 +15,16 @@ export default class UserSummaryBaseResponse {
     )
   }
 
-  toJson(): string {
-    return JSON.stringify({
-      id: this.id,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      pictureUrl: this.pictureUrl
-    })
+  toJson(): object {
+    return {
+      id: this.Id,
+      firstName: this.FirstName,
+      lastName: this.LastName,
+      pictureUrl: this.PictureUrl
+    }
   }
 
   toString(): string {
-    return this.toJson()
+    return JSON.stringify(this.toJson())
   }
 }
