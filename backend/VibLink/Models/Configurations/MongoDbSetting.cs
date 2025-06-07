@@ -1,4 +1,4 @@
-﻿namespace VibLink.Models.Settings
+﻿namespace VibLink.Models.Configurations
 {
     public class MongoDbSetting
     {

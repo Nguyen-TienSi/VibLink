@@ -9,9 +9,9 @@ namespace VibLink.Mappers
         public BaseMappingProfile()
         {
             CreateMap<BaseEntity, AuditMetadataResponse>()
-                .ForMember(dest => dest.CreateAt, opt => opt.MapFrom(src => src.CreatedAt))
-                .ForMember(dest => dest.UpdateAt, opt => opt.MapFrom(src => src.UpdatedAt))
-                .ForMember(dest => dest.DeleteAt, opt => opt.MapFrom(src => src.DeletedAt))
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
+                .ForMember(dest => dest.DeletedAt, opt => opt.MapFrom(src => src.DeletedAt))
                 .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => src.IsDeleted))
                 .ForMember(dest => dest.Version, opt => opt.MapFrom(src => src.Version));
         }

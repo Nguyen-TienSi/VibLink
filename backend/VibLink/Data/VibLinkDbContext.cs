@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using VibLink.Models.Entities;
 using VibLink.Models.Enumerations;
-using VibLink.Models.Settings;
+using VibLink.Models.Configurations;
 
 namespace VibLink.Data
 {

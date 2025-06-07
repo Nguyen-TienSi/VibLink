@@ -1,8 +1,12 @@
+import React from 'react'
+import LoginForm from '../components/Auth/LoginForm'
+import { useNavigate } from 'react-router-dom'
+
 const Login: React.FC = () => {
+  const navigate = useNavigate()
   return (
-    <div className='p-6'>
-      <h1 className='text-2xl font-bold'>Đăng nhập</h1>
-      <input placeholder='Email' className='border p-2' />
+    <div className='min-h-screen flex items-center justify-center bg-gray-50'>
+      <LoginForm onSuccess={() => navigate('/')} />
     </div>
   )
 }

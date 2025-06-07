@@ -1,63 +1,36 @@
 import React, { useState } from 'react'
-import UserService from '../../services/api/UserService'
-import ApiRepository from '../../data/api/ApiRepository'
-import UserSummaryBaseResponse from '../../data/models/response/UserSummaryBaseResponse'
-import HttpApiProvider from '../../data/api/HttpApiProvider'
 
-const apiRepository = new ApiRepository(new HttpApiProvider())
-const userService = new UserService(apiRepository)
+interface SearchBarProps {
+  onSearch: (query: string) => void | Promise<void>
+  loading?: boolean
+}
 
-const SearchBar: React.FC = () => {
-  const [email, setEmail] = useState('')
-  const [user, setUser] = useState<UserSummaryBaseResponse | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, loading }) => {
+  const [query, setQuery] = useState('')
 
-  const handleSearch = async () => {
-    setLoading(true)
-    setError(null)
-    setUser(null)
-    try {
-      const result = await userService.getUserByEmail(email)
-      console.log('User found:', result)
-      setUser(result)
-    } catch (err) {
-      console.error('Search error:', err)
-      setError('User not found')
-    } finally {
-      setLoading(false)
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value)
+    onSearch(e.target.value)
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    onSearch(query)
   }
 
   return (
-    <div>
-      <div className='flex mb-2'>
-        <input
-          type='text'
-          placeholder='Search by email'
-          className='flex-1 p-2 rounded bg-gray-100'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <button className='ml-2 px-4 py-2 bg-purple-600 text-white rounded' onClick={handleSearch} disabled={loading}>
-          Search
-        </button>
-      </div>
-      {loading && <div>Searching...</div>}
-      {error && <div className='text-red-500'>{error}</div>}
-      {user && (
-        <div className='mt-2 p-2 border rounded bg-white'>
-          <div>ID: {user.Id}</div>
-          <div>
-            Name: {user.FirstName} {user.LastName}
-          </div>
-          <div>Email: {user.Email}</div>
-          <div>
-            <img src={user.PictureUrl} alt='User' style={{ width: 48, height: 48, borderRadius: 24 }} />
-          </div>
-        </div>
-      )}
-    </div>
+    <form onSubmit={handleSubmit} className='flex mb-2'>
+      <input
+        type='text'
+        placeholder='Search by email'
+        className='flex-1 p-2 rounded bg-gray-100 border border-black'
+        value={query}
+        onChange={handleChange}
+      />
+      <button className='ml-2 px-4 py-2 bg-purple-600 text-white rounded' type='submit' disabled={loading}>
+        Search
+      </button>
+    </form>
   )
 }
 

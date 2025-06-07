@@ -1,17 +1,17 @@
-export class LoginRequest {
+export default class LoginRequest {
   constructor(
-    public readonly email: string,
-    public readonly password: string
+    public readonly Email: string,
+    public readonly Password: string
   ) {}
 
-  toJson(): string {
-    return JSON.stringify({
-      email: this.email,
-      password: this.password
-    })
+  toJson(): object {
+    return {
+      email: this.Email,
+      password: this.Password
+    }
   }
 
   toString(): string {
-    return this.toJson()
+    return JSON.stringify(this.toJson())
   }
 }

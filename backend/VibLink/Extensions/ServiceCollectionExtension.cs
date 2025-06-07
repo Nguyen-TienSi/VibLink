@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using VibLink.Data;
 using VibLink.Helpers;
-using VibLink.Models.Settings;
+using VibLink.Models.Configurations;
 using VibLink.Repositories;
 using VibLink.Repositories.Implementors;
 using VibLink.Services.Internal;
@@ -28,6 +28,7 @@ namespace VibLink.Extensions
             services.AddScoped<IMessageRepository, MessageRepositoryImpl>();
             services.AddScoped<IFriendshipRepository, FriendshipRepositoryImpl>();
             services.AddScoped<IFileStorageRepository, FileStorageRepositoryImpl>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepositoryImpl>();
         }
 
         private static void RegisterServices(IServiceCollection services)
@@ -38,6 +39,7 @@ namespace VibLink.Extensions
             services.AddScoped<IFriendshipService, FriendshipServiceImpl>();
             services.AddScoped<IAuthService, AuthServiceImpl>();
             services.AddScoped<IFileStorageService, FileStorageServiceImpl>();
+            services.AddScoped<IIdentityService, IdentityServiceImpl>();
         }
 
         public static IServiceCollection AddMongo(this IServiceCollection services, IConfiguration configuration)

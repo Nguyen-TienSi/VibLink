@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using VibLink.Services.Internal;
 
@@ -68,6 +69,7 @@ namespace VibLink.Controllers
         }
 
         [HttpPost("{addresseeId}")]
+        [Authorize]
         public async Task<IActionResult> InsertByRequester([FromRoute] string addresseeId)
         {
             if (!ObjectId.TryParse(addresseeId, out var objectId) || objectId == ObjectId.Empty)

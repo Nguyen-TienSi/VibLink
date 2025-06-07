@@ -1,21 +1,22 @@
-export class UserRegisterRequest {
+export default class UserRegisterRequest {
   constructor(
-    public email: string,
-    public password: string,
-    public firstName: string,
-    public lastName: string
+    public readonly Email: string,
+    public readonly Password: string,
+    public readonly FirstName: string,
+    public readonly LastName: string,
+    public readonly Picture: File | null
   ) {}
 
-  toJson(): string {
-    return JSON.stringify({
-      email: this.email,
-      password: this.password,
-      firstName: this.firstName,
-      lastName: this.lastName
-    })
+  toJson(): object {
+    return {
+      email: this.Email,
+      password: this.Password,
+      firstName: this.FirstName,
+      lastName: this.LastName
+    }
   }
 
   toString(): string {
-    return this.toJson()
+    return JSON.stringify(this.toJson())
   }
 }

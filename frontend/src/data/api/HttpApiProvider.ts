@@ -35,6 +35,13 @@ export default class HttpApiProvider extends HttpProvider implements ApiProvider
     try {
       const finalUrl = this.resolveUrl(endpoint, params)
       const finalHeaders = this.mergeHeaders(headers)
+
+      // Add access token from sessionStorage if available
+      const accessToken = sessionStorage.getItem('accessToken')
+      if (accessToken) {
+        finalHeaders.set('Authorization', `Bearer ${accessToken}`)
+      }
+
       let requestBody: BodyInit | undefined
 
       if (body instanceof FormData) {

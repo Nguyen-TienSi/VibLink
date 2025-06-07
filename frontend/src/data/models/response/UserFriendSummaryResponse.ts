@@ -5,9 +5,10 @@ export default class UserFriendSummaryResponse extends UserSummaryBaseResponse {
     public readonly Id: string,
     public readonly FirstName: string,
     public readonly LastName: string,
+    public readonly Email: string,
     public readonly PictureUrl: string
   ) {
-    super(Id, FirstName, LastName, PictureUrl)
+    super(Id, FirstName, LastName, Email, PictureUrl)
   }
 
   static fromJson(json: Record<string, unknown>): UserFriendSummaryResponse {
@@ -15,6 +16,7 @@ export default class UserFriendSummaryResponse extends UserSummaryBaseResponse {
       json['id'] as string,
       json['firstName'] as string,
       json['lastName'] as string,
+      json['email'] as string,
       json['pictureUrl'] as string
     )
   }
@@ -24,6 +26,7 @@ export default class UserFriendSummaryResponse extends UserSummaryBaseResponse {
       id: this.Id,
       firstName: this.FirstName,
       lastName: this.LastName,
+      email: this.Email,
       pictureUrl: this.PictureUrl
     }
   }
@@ -34,7 +37,7 @@ export default class UserFriendSummaryResponse extends UserSummaryBaseResponse {
 }
 
 export const friends: UserFriendSummaryResponse[] = [
-  new UserFriendSummaryResponse('1', 'Osman', 'Campos', ''),
-  new UserFriendSummaryResponse('2', 'Jasmin', 'Lowery', ''),
-  new UserFriendSummaryResponse('3', 'Anthony', 'Cordanes', '')
+  new UserFriendSummaryResponse('1', 'Osman', 'Campos', '', ''),
+  new UserFriendSummaryResponse('2', 'Jasmin', 'Lowery', '', ''),
+  new UserFriendSummaryResponse('3', 'Anthony', 'Cordanes', '', '')
 ]

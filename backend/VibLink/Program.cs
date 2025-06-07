@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using VibLink.Data;
 using VibLink.Extensions;
 
@@ -14,6 +15,8 @@ namespace VibLink
             builder.Services.AddMongo(builder.Configuration);
             builder.Services.AddApplicationServices();
             builder.Services.AddHttpServices();
+            builder.Services.AddJwtAuthentication(builder.Configuration);
+            builder.Services.AddSwagger();
 
             builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
@@ -21,6 +24,7 @@ namespace VibLink
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -51,6 +55,7 @@ namespace VibLink
             // Enable CORS
             app.UseCors("AllowFrontend");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
