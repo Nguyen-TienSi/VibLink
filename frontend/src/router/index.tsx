@@ -3,12 +3,17 @@ import { createBrowserRouter } from 'react-router-dom'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
-import ChatLayout from '../components/Chat/ChatLayout'
+import MainLayout from '../layouts/MainLayout'
+import ProtectedRoute from '../components/Auth/ProtectedRoute'
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />
+    element: (
+      <ProtectedRoute>
+        <Home />
+      </ProtectedRoute>
+    )
   },
   {
     path: '/login',
@@ -19,7 +24,11 @@ export const router = createBrowserRouter([
     element: <Register />
   },
   {
-    path: '/chat',
-    element: <ChatLayout />
+    path: '/main',
+    element: (
+      <ProtectedRoute>
+        <MainLayout />
+      </ProtectedRoute>
+    )
   }
 ])

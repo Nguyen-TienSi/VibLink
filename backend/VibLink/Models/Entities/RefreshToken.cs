@@ -4,7 +4,7 @@ using MongoDB.EntityFrameworkCore;
 
 namespace VibLink.Models.Entities
 {
-    [Collection("refresh_tokens")]
+    [Collection("refreshTokens")]
     public class RefreshToken : BaseEntity
     {
         [BsonElement("token")]

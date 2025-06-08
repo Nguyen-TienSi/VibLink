@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using VibLink.Models.DTOs.Request;
 using VibLink.Services.Internal;
 
 namespace VibLink.Controllers
@@ -14,28 +15,6 @@ namespace VibLink.Controllers
         public FriendshipController(IFriendshipService friendshipService)
         {
             _friendshipService = friendshipService;
-        }
-
-        [HttpGet("requester")]
-        public async Task<IActionResult> GetByRequester()
-        {
-            var friendships = await _friendshipService.GetByRequesterAsync();
-            if (friendships == null || !friendships.Any())
-            {
-                return NotFound("No friendships found for the addressee.");
-            }
-            return Ok(friendships);
-        }
-
-        [HttpGet("addressee")]
-        public async Task<IActionResult> GetByAddressee()
-        {
-            var friendships = await _friendshipService.GetByAddresseeAsync();
-            if (friendships == null || !friendships.Any())
-            {
-                return NotFound("No friendships found for the addressee.");
-            }
-            return Ok(friendships);
         }
 
         [HttpGet("requester/{addresseeId}")]
@@ -81,25 +60,32 @@ namespace VibLink.Controllers
         }
 
         [HttpPut("requester/{addresseeId}")]
-        public async Task<IActionResult> UpdateByRequester([FromRoute] string addresseeId, [FromBody] Models.DTOs.Shared.FriendshipRequestStatus status)
+        public async Task<IActionResult> UpdateByRequester([FromRoute] string addresseeId, [FromBody] FriendshipRequestStatusRequest friendshipRequestStatus)
         {
             if (!ObjectId.TryParse(addresseeId, out var objectId) || objectId == ObjectId.Empty)
             {
                 return BadRequest("Addressee ID is invalid or empty.");
             }
-            var friendship = await _friendshipService.UpdateByRequesterAsync(objectId, status);
+            var friendship = await _friendshipService.UpdateByRequesterAsync(objectId, friendshipRequestStatus);
             return Ok(friendship);
         }
 
         [HttpPut("addressee/{requesterId}")]
-        public async Task<IActionResult> UpdateByAddressee([FromRoute] string requesterId, [FromBody] Models.DTOs.Shared.FriendshipRequestStatus status)
+        public async Task<IActionResult> UpdateByAddressee([FromRoute] string requesterId, [FromBody] FriendshipRequestStatusRequest friendshipRequestStatus)
         {
             if (!ObjectId.TryParse(requesterId, out var objectId) || objectId == ObjectId.Empty)
             {
                 return BadRequest("Requester ID is invalid or empty.");
             }
-            var friendship = await _friendshipService.UpdateByAddresseeAsync(objectId, status);
+            var friendship = await _friendshipService.UpdateByAddresseeAsync(objectId, friendshipRequestStatus);
             return Ok(friendship);
+        }
+
+        [HttpGet("invites")]
+        public async Task<IActionResult> GetAllInvites()
+        {
+            var invites = await _friendshipService.GetPendingInvitesAsync();
+            return Ok(invites);
         }
     }
 }

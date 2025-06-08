@@ -5,19 +5,26 @@ import ConversationDetailsResponse from '../../data/models/response/Conversation
 export default class ConversationService {
   constructor(private readonly apiRepository: ApiRepository) {}
 
-  async getConversations(): Promise<ConversationDetailsResponse[]> {
-    return await this.apiRepository.get<ConversationDetailsResponse[]>('/conversations')
+  async getById(conversationId: string): Promise<ConversationDetailsResponse> {
+    const data = await this.apiRepository.get<Record<string, unknown>>(`/api/Conversation/${conversationId}`)
+    return ConversationDetailsResponse.fromJson(data)
+  }
+
+  async getByParticipant(): Promise<ConversationDetailsResponse[]> {
+    const data = await this.apiRepository.get<Record<string, unknown>[]>('/api/Conversation/by-participant')
+    return data.map((item) => ConversationDetailsResponse.fromJson(item))
   }
 
   async createConversation(conversationRequest: ConversationCreateRequest): Promise<ConversationDetailsResponse> {
-    return await this.apiRepository.post<ConversationDetailsResponse>(
-      '/conversations',
+    const data = await this.apiRepository.post<Record<string, unknown>>(
+      '/api/Conversation',
       undefined,
-      conversationRequest.toJson()
+      conversationRequest.toFormData()
     )
+    return ConversationDetailsResponse.fromJson(data)
   }
 
   async deleteConversation(conversationId: string): Promise<void> {
-    await this.apiRepository.delete<void>(`/conversations/${conversationId}`)
+    await this.apiRepository.delete<void>(`/api/Conversation/${conversationId}`)
   }
 }

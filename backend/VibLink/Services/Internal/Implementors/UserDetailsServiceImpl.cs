@@ -12,15 +12,18 @@ namespace VibLink.Services.Internal.Implementors
     public class UserDetailsServiceImpl : IUserDetailsService
     {
         private readonly IUserDetailsRepository _userDetailsRepository;
+        private readonly IConversationRepository _conversationRepository;
         private readonly IMapper _mapper;
         private readonly HttpContextManager _httpContextManager;
 
         public UserDetailsServiceImpl(
             IUserDetailsRepository userDetailsRepository,
+            IConversationRepository conversationRepository,
             IMapper mapper,
             HttpContextManager httpContextManager)
         {
             _userDetailsRepository = userDetailsRepository;
+            _conversationRepository = conversationRepository;
             _mapper = mapper;
             _httpContextManager = httpContextManager;
         }
@@ -70,6 +73,23 @@ namespace VibLink.Services.Internal.Implementors
             }
 
             return _mapper.Map<UserSummaryBaseResponse>(userDetails);
+        }
+
+        public async Task<IEnumerable<UserFriendSummaryResponse>> GetByConversationId(ObjectId conversationId)
+        {
+            var conversation = await _conversationRepository.FindByIdAsync(conversationId);
+            if (conversation == null || conversation.ParticipantIds == null || conversation.ParticipantIds.Count == 0)
+                return [];
+
+            var users = new List<UserDetails>();
+            foreach (var participantId in conversation.ParticipantIds)
+            {
+                var user = await _userDetailsRepository.FindByIdAsync(participantId);
+                if (user != null)
+                    users.Add(user);
+            }
+
+            return _mapper.Map<ICollection<UserFriendSummaryResponse>>(users);
         }
     }
 }

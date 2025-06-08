@@ -1,8 +1,6 @@
 import ConversationType from '../shared/ConversationType'
 import AuditMetadataResponse from './AuditMetadataResponse'
 import BaseResponse from './BaseResponse'
-import MessageDetailsResponse from './MessageDetailsResponse'
-import UserDetailsResponse from './UserDetailsResponse'
 
 export default class ConversationDetailsResponse extends BaseResponse {
   constructor(
@@ -10,9 +8,7 @@ export default class ConversationDetailsResponse extends BaseResponse {
     public readonly Id: string,
     public readonly ChatName: string,
     public readonly ChatPictureUrl: string,
-    public readonly ConversationType: ConversationType,
-    public readonly Participants: UserDetailsResponse[],
-    public readonly Messages: MessageDetailsResponse[]
+    public readonly ConversationType: ConversationType
   ) {
     super(AuditMetadataResponse)
   }
@@ -23,11 +19,7 @@ export default class ConversationDetailsResponse extends BaseResponse {
       json['id'] as string,
       json['chatName'] as string,
       json['chatPictureUrl'] as string,
-      json['conversationType'] as ConversationType,
-      (json['participants'] as Record<string, unknown>[]).map((participant) =>
-        UserDetailsResponse.fromJson(participant)
-      ),
-      (json['messages'] as Record<string, unknown>[]).map((message) => MessageDetailsResponse.fromJson(message))
+      json['conversationType'] as ConversationType
     )
   }
 
@@ -37,9 +29,7 @@ export default class ConversationDetailsResponse extends BaseResponse {
       id: this.Id,
       chatName: this.ChatName,
       chatPictureUrl: this.ChatPictureUrl,
-      conversationType: this.ConversationType,
-      participants: this.Participants.map((participant) => participant.toJson()),
-      messages: this.Messages.map((message) => message.toJson())
+      conversationType: this.ConversationType
     }
   }
 

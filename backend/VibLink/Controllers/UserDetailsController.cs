@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using VibLink.Models.Entities;
 using VibLink.Services.Internal;
 
@@ -77,6 +76,19 @@ namespace VibLink.Controllers
             var patchedUserDetails = await _userDetailsService.PatchUserDetails(patchDocument);
 
             return Ok(patchedUserDetails);
+        }
+
+        [HttpGet("by-conversation/{id}")]
+        public async Task<IActionResult> GetByConversationId(string id)
+        {
+            if (!MongoDB.Bson.ObjectId.TryParse(id, out var conversationId))
+                return BadRequest("Invalid conversation ID.");
+
+            var users = await _userDetailsService.GetByConversationId(conversationId);
+            if (users == null || !users.Any())
+                return NotFound("No users found for this conversation.");
+
+            return Ok(users);
         }
     }
 }

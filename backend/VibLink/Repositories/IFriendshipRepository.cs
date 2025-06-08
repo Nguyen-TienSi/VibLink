@@ -10,5 +10,9 @@ namespace VibLink.Repositories
         Task<IEnumerable<Friendship>> FindByAddresseeIdAsync(ObjectId addresseeId);
 
         Task<Friendship> FindByRequesterIdAndAddresseeIdAsync(ObjectId requesterId, ObjectId addresseeId);
+
+        Task<IEnumerable<Friendship>> FindPendingByRequesterIdAsync(ObjectId requesterId);
+
+        Task<IEnumerable<Friendship>> FindPendingByAddresseeIdAsync(ObjectId addresseeId);
     }
 }

@@ -10,7 +10,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, loading }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
-    onSearch(e.target.value)
   }
 
   const handleSubmit = (e: React.FormEvent) => {

@@ -5,7 +5,7 @@ export default class ConversationCreateRequest {
     public readonly ChatName: string,
     public readonly ChatPicture: File | null,
     public readonly ConversationType: ConversationType,
-    public readonly Participants: string[]
+    public readonly ParticipantIds: string[]
   ) {}
 
   static fromJson(json: Record<string, unknown>): ConversationCreateRequest {
@@ -13,7 +13,7 @@ export default class ConversationCreateRequest {
       json['chatName'] as string,
       json['chatPicture'] as File | null,
       json['conversationType'] as ConversationType,
-      json['participants'] as string[]
+      json['participantIds'] as string[]
     )
   }
 
@@ -22,8 +22,19 @@ export default class ConversationCreateRequest {
       chatName: this.ChatName,
       chatPicture: this.ChatPicture,
       conversationType: this.ConversationType,
-      participants: this.Participants
+      participantIds: this.ParticipantIds
     }
+  }
+
+  toFormData(): FormData {
+    const formData = new FormData()
+    formData.append('chatName', this.ChatName)
+    if (this.ChatPicture) {
+      formData.append('chatPicture', this.ChatPicture)
+    }
+    formData.append('conversationType', this.ConversationType.toString())
+    this.ParticipantIds.forEach((id) => formData.append('participantIds', id))
+    return formData
   }
 
   toString(): string {

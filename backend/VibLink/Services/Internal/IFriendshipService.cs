@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson;
 using VibLink.Models.DTOs.Response;
-using VibLink.Models.DTOs.Shared;
+using VibLink.Models.DTOs.Request;
 
 namespace VibLink.Services.Internal
 {
@@ -8,9 +8,7 @@ namespace VibLink.Services.Internal
     {
         Task<UserSummaryBaseResponse> GetByEmail(string email);
 
-        Task<IEnumerable<FriendshipDetailsResponse>> GetByRequesterAsync();
-
-        Task<IEnumerable<FriendshipDetailsResponse>> GetByAddresseeAsync();
+        Task<IEnumerable<FriendshipDetailsResponse>> GetPendingInvitesAsync();
 
         Task<FriendshipDetailsResponse?> GetByRequesterAsync(ObjectId addresseeId);
 
@@ -18,8 +16,8 @@ namespace VibLink.Services.Internal
 
         Task<FriendshipDetailsResponse> InsertByRequesterAsync(ObjectId addresseeId);
 
-        Task<FriendshipDetailsResponse> UpdateByRequesterAsync(ObjectId addresseeId, FriendshipRequestStatus status);
+        Task<FriendshipDetailsResponse> UpdateByRequesterAsync(ObjectId addresseeId, FriendshipRequestStatusRequest friendshipRequestStatusRequest);
 
-        Task<FriendshipDetailsResponse> UpdateByAddresseeAsync(ObjectId requesterId, FriendshipRequestStatus status);
+        Task<FriendshipDetailsResponse> UpdateByAddresseeAsync(ObjectId requesterId, FriendshipRequestStatusRequest friendshipRequestStatusRequest);
     }
 }

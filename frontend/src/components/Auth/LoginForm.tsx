@@ -75,6 +75,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
       >
         {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
       </button>
+      <div className='text-center mt-2'>
+        Chưa có tài khoản?{' '}
+        <a href='/register' className='text-blue-600 hover:underline'>
+          Đăng ký
+        </a>
+      </div>
     </form>
   )
 }

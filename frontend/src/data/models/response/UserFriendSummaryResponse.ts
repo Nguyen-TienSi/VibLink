@@ -35,9 +35,3 @@ export default class UserFriendSummaryResponse extends UserSummaryBaseResponse {
     return JSON.stringify(this.toJson())
   }
 }
-
-export const friends: UserFriendSummaryResponse[] = [
-  new UserFriendSummaryResponse('1', 'Osman', 'Campos', '', ''),
-  new UserFriendSummaryResponse('2', 'Jasmin', 'Lowery', '', ''),
-  new UserFriendSummaryResponse('3', 'Anthony', 'Cordanes', '', '')
-]

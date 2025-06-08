@@ -6,8 +6,9 @@ import UserDetailsResponse from './UserDetailsResponse'
 export default class FriendshipDetailsResponse extends BaseResponse {
   constructor(
     public readonly AuditMetadataResponse: AuditMetadataResponse,
-    public readonly Requester: UserDetailsResponse | null,
-    public readonly Addressee: UserDetailsResponse | null,
+    public readonly Id: string,
+    public readonly Requester: UserDetailsResponse,
+    public readonly Addressee: UserDetailsResponse,
     public readonly FriendRequestStatus: FriendshipRequestStatus
   ) {
     super(AuditMetadataResponse)
@@ -16,8 +17,9 @@ export default class FriendshipDetailsResponse extends BaseResponse {
   static fromJson(json: Record<string, unknown>): FriendshipDetailsResponse {
     return new FriendshipDetailsResponse(
       AuditMetadataResponse.fromJson(json['auditMetadataResponse'] as Record<string, unknown>),
-      json['requester'] ? UserDetailsResponse.fromJson(json['requester'] as Record<string, unknown>) : null,
-      json['addressee'] ? UserDetailsResponse.fromJson(json['addressee'] as Record<string, unknown>) : null,
+      json['id'] as string,
+      UserDetailsResponse.fromJson(json['requester'] as Record<string, unknown>),
+      UserDetailsResponse.fromJson(json['addressee'] as Record<string, unknown>),
       json['friendRequestStatus'] as FriendshipRequestStatus
     )
   }
@@ -25,8 +27,9 @@ export default class FriendshipDetailsResponse extends BaseResponse {
   toJson(): object {
     return {
       AuditMetadataResponse: this.AuditMetadataResponse.toJson(),
-      Requester: this.Requester ? this.Requester.toJson() : null,
-      Addressee: this.Addressee ? this.Addressee.toJson() : null,
+      Id: this.Id,
+      Requester: this.Requester.toJson(),
+      Addressee: this.Addressee.toJson(),
       FriendRequestStatus: this.FriendRequestStatus
     }
   }

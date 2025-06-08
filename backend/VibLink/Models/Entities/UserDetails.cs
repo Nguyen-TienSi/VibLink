@@ -5,7 +5,7 @@ using VibLink.Models.Enumerations;
 
 namespace VibLink.Models.Entities
 {
-    [Collection("user_details")]
+    [Collection("userDetails")]
     public class UserDetails : BaseEntity
     {
         [BsonElement("firstName")]
@@ -21,7 +21,7 @@ namespace VibLink.Models.Entities
         public ObjectId? PictureId { get; set; } = null;
         [BsonIgnore]
         public FileStorage? Picture { get; set; } = null;
-        [BsonElement("user_roles")]
+        [BsonElement("userRoles")]
         [BsonRepresentation(BsonType.String)]
         public ICollection<UserRole> UserRoles { get; set; } = [];
         [BsonElement("lastLogin")]

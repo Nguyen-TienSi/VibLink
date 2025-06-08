@@ -2,18 +2,18 @@ import MessageType from '../shared/MessageType'
 import ReactionType from '../shared/ReactionType'
 import AuditMetadataResponse from './AuditMetadataResponse'
 import BaseResponse from './BaseResponse'
-import UserDetailsResponse from './UserDetailsResponse'
+import UserSummaryBaseResponse from './UserSummaryBaseResponse'
 
 export default class MessageDetailsResponse extends BaseResponse {
   constructor(
     public readonly AuditMetadataResponse: AuditMetadataResponse,
     public readonly Id: string,
-    public readonly Sender: UserDetailsResponse,
+    public readonly Sender: UserSummaryBaseResponse,
     public readonly Content: string,
     public readonly MessageType: MessageType,
-    public readonly Recipients: UserDetailsResponse[],
-    public readonly SeenBy: Map<UserDetailsResponse, Date>,
-    public readonly Reactions: Map<UserDetailsResponse, ReactionType>
+    public readonly Recipients: UserSummaryBaseResponse[],
+    public readonly SeenBy: Map<UserSummaryBaseResponse, Date>,
+    public readonly Reactions: Map<UserSummaryBaseResponse, ReactionType>
   ) {
     super(AuditMetadataResponse)
   }
@@ -22,14 +22,14 @@ export default class MessageDetailsResponse extends BaseResponse {
     return new MessageDetailsResponse(
       AuditMetadataResponse.fromJson(json['auditMetadataResponse'] as Record<string, unknown>),
       json['id'] as string,
-      UserDetailsResponse.fromJson(json['sender'] as Record<string, unknown>),
+      UserSummaryBaseResponse.fromJson(json['sender'] as Record<string, unknown>),
       json['content'] as string,
       json['messageType'] as MessageType,
-      (json['recipients'] as Record<string, unknown>[]).map((recipient) => UserDetailsResponse.fromJson(recipient)),
+      (json['recipients'] as Record<string, unknown>[]).map((recipient) => UserSummaryBaseResponse.fromJson(recipient)),
       json['seenBy'] instanceof Map
         ? new Map(
             Array.from(json['seenBy'] as Map<unknown, unknown>).map(([key, value]) => [
-              UserDetailsResponse.fromJson(key as Record<string, unknown>),
+              UserSummaryBaseResponse.fromJson(key as Record<string, unknown>),
               new Date(value as string | Date)
             ])
           )
@@ -37,7 +37,7 @@ export default class MessageDetailsResponse extends BaseResponse {
       json['reactions'] instanceof Map
         ? new Map(
             Array.from(json['reactions'] as Map<unknown, unknown>).map(([key, value]) => [
-              UserDetailsResponse.fromJson(key as Record<string, unknown>),
+              UserSummaryBaseResponse.fromJson(key as Record<string, unknown>),
               value as ReactionType
             ])
           )

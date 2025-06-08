@@ -46,7 +46,7 @@ namespace VibLink.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateConversation([FromBody] ConversationCreateRequest conversationCreateRequest)
+        public async Task<IActionResult> CreateConversation([FromForm] ConversationCreateRequest conversationCreateRequest)
         {
             if (conversationCreateRequest == null)
             {

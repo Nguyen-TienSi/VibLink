@@ -15,17 +15,31 @@ namespace VibLink.Services.Internal.Implementors
         private readonly IConversationRepository _conversationRepository;
         private readonly IMapper _mapper;
         private readonly HttpContextManager _httpContextManager;
+        private readonly IUserDetailsRepository _userDetailsRepository;
 
         public MessageServiceImpl(
             IMessageRepository messageRepository,
             IConversationRepository conversationRepository,
             IMapper mapper,
-            HttpContextManager httpContextManager)
+            HttpContextManager httpContextManager,
+            IUserDetailsRepository userDetailsRepository)
         {
             _messageRepository = messageRepository;
             _conversationRepository = conversationRepository;
             _mapper = mapper;
             _httpContextManager = httpContextManager;
+            _userDetailsRepository = userDetailsRepository;
+        }
+
+        public async Task<MessageDetailsResponse?> GetById(ObjectId id)
+        {
+            var message = await _messageRepository.FindByIdAsync(id);
+            if (message == null) return null;
+
+            message.Sender = await _userDetailsRepository.FindByIdAsync(message.SenderId)
+                ?? throw new InvalidOperationException("Sender not found.");
+
+            return _mapper.Map<MessageDetailsResponse>(message);
         }
 
         public async Task<IEnumerable<MessageDetailsResponse>> GetByConversationId(ObjectId conversationId)
@@ -36,6 +50,12 @@ namespace VibLink.Services.Internal.Implementors
 
             var filter = Builders<Message>.Filter.In(m => m.Id, conversation.MessageIds);
             var messages = await _messageRepository.GetMongoCollection().Find(filter).ToListAsync();
+
+            foreach (var message in messages)
+            {
+                message.Sender = await _userDetailsRepository.FindByIdAsync(message.SenderId)
+                    ?? throw new InvalidOperationException("Sender not found.");
+            }
 
             return _mapper.Map<IEnumerable<MessageDetailsResponse>>(messages);
         }
@@ -59,6 +79,9 @@ namespace VibLink.Services.Internal.Implementors
                 conversation.MessageIds.Add(message.Id);
                 await _conversationRepository.ReplaceOneAsync(conversation.Id, conversation);
             }
+
+            message.Sender = await _userDetailsRepository.FindByIdAsync(message.SenderId)
+                ?? throw new InvalidOperationException("Sender not found.");
 
             var messageDetails = _mapper.Map<MessageDetailsResponse>(message);
             return messageDetails;

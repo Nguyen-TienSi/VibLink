@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using VibLink.Helpers;
 using VibLink.Models.DTOs.Request;
 using VibLink.Models.DTOs.Response;
+using VibLink.Models.Entities;
 using VibLink.Repositories;
 
 namespace VibLink.Services.Internal.Implementors
@@ -13,6 +14,7 @@ namespace VibLink.Services.Internal.Implementors
         private readonly IConversationRepository _conversationRepository;
         private readonly IUserDetailsRepository _userDetailsRepository;
         private readonly IFileStorageRepository _fileStorageRepository;
+        private readonly IMessageRepository _messageRepository;
         private readonly IMapper _mapper;
         private readonly HttpContextManager _httpContextManager;
 
@@ -20,12 +22,14 @@ namespace VibLink.Services.Internal.Implementors
             IConversationRepository conversationRepository,
             IUserDetailsRepository userDetailsRepository,
             IFileStorageRepository fileStorageRepository,
+            IMessageRepository messageRepository,
             IMapper mapper,
             HttpContextManager httpContextManager)
         {
             _conversationRepository = conversationRepository;
             _userDetailsRepository = userDetailsRepository;
             _fileStorageRepository = fileStorageRepository;
+            _messageRepository = messageRepository;
             _mapper = mapper;
             _httpContextManager = httpContextManager;
         }
@@ -37,6 +41,24 @@ namespace VibLink.Services.Internal.Implementors
             if (conversation == null)
             {
                 return null;
+            }
+
+            // Populate Participants
+            conversation.Participants = new List<UserDetails>();
+            foreach (var participantId in conversation.ParticipantIds)
+            {
+                var user = await _userDetailsRepository.FindByIdAsync(participantId);
+                if (user != null)
+                    conversation.Participants.Add(user);
+            }
+
+            // Populate Messages
+            conversation.Messages = new List<Message>();
+            foreach (var messageId in conversation.MessageIds)
+            {
+                var message = await _messageRepository.FindByIdAsync(messageId);
+                if (message != null)
+                    conversation.Messages.Add(message);
             }
 
             return _mapper.Map<ConversationDetailsResponse>(conversation);
@@ -53,7 +75,8 @@ namespace VibLink.Services.Internal.Implementors
 
         public async Task<ConversationDetailsResponse> InsertOneAsync(ConversationCreateRequest conversationCreateRequest)
         {
-            var conversation = _mapper.Map<Models.Entities.Conversation>(conversationCreateRequest);
+            var userDetailsId = _httpContextManager.GetUserId();
+            var conversation = _mapper.Map<Conversation>(conversationCreateRequest, opt => opt.Items["UserDetailsId"] = userDetailsId);
 
             if (conversationCreateRequest.ChatPicture != null)
             {

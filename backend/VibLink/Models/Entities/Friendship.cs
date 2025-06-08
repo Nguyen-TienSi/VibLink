@@ -16,7 +16,8 @@ namespace VibLink.Models.Entities
         public ObjectId AddresseeId { get; set; }
         [BsonIgnore]
         public UserDetails Addressee { get; set; } = null!;
-        [BsonElement("friend_request_status")]
-        public FriendshipRequestStatus FriendshipRequestStatus { get; set; }
+        [BsonElement("friendRequestStatus")]
+        [BsonRepresentation(BsonType.String)]
+        public FriendshipRequestStatus FriendshipRequestStatus { get; set; } = FriendshipRequestStatus.PENDING;
     }
 }

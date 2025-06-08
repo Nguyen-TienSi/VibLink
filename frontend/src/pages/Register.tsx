@@ -7,7 +7,7 @@ const Register: React.FC = () => {
 
   return (
     <div style={{ maxWidth: 400, margin: '0 auto', padding: 24 }}>
-      <RegisterForm onSuccess={() => navigate('/login')} />
+      <RegisterForm onSuccess={() => navigate('/')} />
     </div>
   )
 }

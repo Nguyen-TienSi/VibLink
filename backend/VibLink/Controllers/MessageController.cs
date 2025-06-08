@@ -17,7 +17,22 @@ namespace VibLink.Controllers
             _messageService = messageService;
         }
 
-        [HttpGet("conversation/{id}")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] string id)
+        {
+            if (!ObjectId.TryParse(id, out var messageId))
+            {
+                return BadRequest("Invalid ObjectId format.");
+            }
+            var message = await _messageService.GetById(messageId);
+            if (message == null)
+            {
+                return NotFound("Message not found.");
+            }
+            return Ok(message);
+        }
+
+        [HttpGet("by-conversation/{id}")]
         public async Task<IActionResult> GetByConversationId([FromRoute] string id)
         {
             if (!ObjectId.TryParse(id, out var conversationId))
@@ -39,21 +54,6 @@ namespace VibLink.Controllers
             }
             var messageDetails = await _messageService.InsertOneAsync(messageCreateRequest);
             return CreatedAtAction(nameof(GetById), new { messageDetails.Id }, messageDetails);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] string id)
-        {
-            if (!ObjectId.TryParse(id, out var messageId))
-            {
-                return BadRequest("Invalid ObjectId format.");
-            }
-            var message = await _messageService.GetByConversationId(messageId);
-            if (message == null)
-            {
-                return NotFound("Message not found.");
-            }
-            return Ok(message);
         }
     }
 }

@@ -6,11 +6,11 @@ namespace VibLink.Models.DTOs.Response
     public record MessageDetailsResponse : BaseResponse
     {
         public string Id { get; init; } = string.Empty;
-        public required UserDetailsResponse Sender { get; init; }
+        public required UserSummaryBaseResponse Sender { get; init; }
         public string Content { get; init; } = string.Empty;
         public MessageType MessageType { get; init; }
-        public ICollection<UserDetailsResponse>? Recipients { get; init; }
-        public ICollection<Dictionary<UserDetailsResponse, DateTime>>? SeenBy { get; init; }
-        public ICollection<Dictionary<UserDetailsResponse, ReactionType>>? Reactions { get; init; }
+        public ICollection<UserSummaryBaseResponse>? Recipients { get; init; }
+        public ICollection<Dictionary<UserSummaryBaseResponse, DateTime>>? SeenBy { get; init; }
+        public ICollection<Dictionary<UserSummaryBaseResponse, ReactionType>>? Reactions { get; init; }
     }
 }
